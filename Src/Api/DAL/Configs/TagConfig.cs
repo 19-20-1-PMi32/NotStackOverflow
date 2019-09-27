@@ -12,14 +12,12 @@ namespace DAL.Configs
         public void Configure(EntityTypeBuilder<Tag> builder)
         {
             builder.HasKey(b => b.Id);
-            
+
             builder.Property(b => b.Title)
-                .IsRequired()
-                .HasMaxLength(20);
+                .IsRequired();
 
             builder.Property(b => b.Description)
-                .IsRequired()
-                .HasMaxLength(200);
+                .IsRequired();
 
 
         }

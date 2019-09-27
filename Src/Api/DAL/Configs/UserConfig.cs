@@ -14,21 +14,20 @@ namespace DAL.Configs
             builder.HasKey(b => b.Id);
 
             builder.Property(b => b.Name)
-                .IsRequired()
-                .HasMaxLength(30);
+                .IsRequired();
+
+            builder.Property(b => b.Password)
+                .IsRequired();
 
             builder.Property(b => b.Surname)
-                .IsRequired()
-                .HasMaxLength(50);
+                .IsRequired();
 
-            builder.Property(b => b.NickName)
-                .HasMaxLength(20);
+            builder.Property(b => b.NickName);
 
             builder.Property(b => b.Email)
                 .IsRequired();
 
-            builder.Property(b => b.Job)
-                .HasMaxLength(200);
+            builder.Property(b => b.Job);
 
             builder.Property(b => b.Role)
                 .IsRequired();

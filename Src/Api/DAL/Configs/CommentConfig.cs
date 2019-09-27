@@ -17,8 +17,7 @@ namespace DAL.Configs
                 .IsRequired();
 
             builder.Property(b => b.Text)
-                .IsRequired()
-                .HasMaxLength(350);
+                .IsRequired();
 
             builder.HasOne(c => c.Post)
                 .WithMany(p => p.Comments)

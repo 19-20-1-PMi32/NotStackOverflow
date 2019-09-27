@@ -26,8 +26,7 @@ namespace DAL.Configs
                 .IsRequired();
 
             builder.Property(b => b.Text)
-                .IsRequired()
-                .HasMaxLength(2000);
+                .IsRequired();
 
             builder.Property(b => b.Viewed)
                 .IsRequired();
@@ -38,7 +37,6 @@ namespace DAL.Configs
             builder.HasOne(p => p.User)
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.UserId);
-
 
         }
     }
