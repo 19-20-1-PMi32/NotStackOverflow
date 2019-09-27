@@ -14,8 +14,7 @@ namespace DAL.Configs
             builder.HasKey(b => b.Id);
 
             builder.Property(b => b.Text)
-                .IsRequired()
-                .HasMaxLength(50);
+                .IsRequired();
         }
     }
 }
