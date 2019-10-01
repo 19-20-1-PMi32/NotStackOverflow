@@ -2,6 +2,7 @@
 using DAL.Entities;
 using DAL.Repositories;
 using System;
+using DAL.UnitOfWork;
 
 namespace TestTool
 {
@@ -9,30 +10,11 @@ namespace TestTool
     {
         static void Main(string[] args)
         {
-            var context = new ApplicationContext();
-
-            var postRep = new PostRepository(context);
-            var tagRep = new TagRepository(context);
-
-            var tag = new Tag()
+            var uof = new UnitOfWork(new ApplicationContext());
+            foreach (var i in uof.Tags.GetAll())
             {
-                Description = "description2",
-                Title = "Title2"
-            };
-
-            tagRep.Add(tag);
-
-            Console.WriteLine(tag.Id);
-
-            //context.SaveChanges();
-
-            //var a =  tagRep.GetById(1);
-           
-           // postRep.Add(post);
-            context.SaveChanges();
-
-            Console.WriteLine(tag.Id);
-
+                Console.WriteLine(i.Description);
+            }
         }
     }
 }
