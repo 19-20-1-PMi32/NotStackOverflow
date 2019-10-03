@@ -8,7 +8,6 @@ using DAL.Interfaces;
 using DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using static BLL.DI.DI;
 
 namespace TestTool
 {
@@ -17,14 +16,14 @@ namespace TestTool
         static void Main(string[] args)
         {
            // var uof = new UnitOfWork(new ApplicationContext());
-           using (var container = ConfigurerBLL.ConfigureDependencies())
+           using (var container = ConfigurerDAL.ConfigureDependencies())
            {
                var ouf = container.Resolve<IUnitOfWork>();
                foreach (var i in ouf.Tags.GetAll())
                {
                    Console.WriteLine(i.Description);
                }
-            }
+           }
         }
     }
 }
