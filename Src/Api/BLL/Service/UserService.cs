@@ -67,5 +67,6 @@ namespace BLL.Service
         {
             return _mapper.Map<IEnumerable<User>, ICollection<UserDTO>>(_database.Users.GetAll());
         }
+
     }
 }

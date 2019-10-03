@@ -27,8 +27,8 @@ namespace DAL.DI
         {
             var services = new ServiceCollection();
             builder.Populate(services);
-            builder.RegisterType<UnitOfWork.UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
-            builder.RegisterType<ApplicationContext>().InstancePerLifetimeScope();
+            builder.RegisterType<UnitOfWork.UnitOfWork>().As<IUnitOfWork>().SingleInstance();
+            builder.RegisterType<ApplicationContext>().SingleInstance();
 
 
             base.Load(builder);

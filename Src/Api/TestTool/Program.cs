@@ -3,6 +3,8 @@ using DAL.Entities;
 using DAL.Repositories;
 using System;
 using Autofac;
+using BLL;
+using BLL.Module;
 using BLL.Service;
 using DAL.DI;
 using DAL.Interfaces;
@@ -17,10 +19,10 @@ namespace TestTool
         static void Main(string[] args)
         {
             //var uof = new UnitOfWork(new ApplicationContext());
-            using (var container = ConfigurerDAL.ConfigureDependencies())
+            using (var container = ConfigurerBLL.ConfigureDependencies())
             {
                 var uof = container.Resolve<IUnitOfWork>();
-                var userService = new UserService(uof);
+                var userService = container.Resolve<IUserService>();
 
                 var user = userService.GetUserById(1);
                 Console.WriteLine($"{user.Email}  {user.Password}  {user.GetType()}");
