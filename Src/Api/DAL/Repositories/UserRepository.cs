@@ -1,9 +1,7 @@
-﻿using DAL.Context;
+﻿using System.Linq;
+using DAL.Context;
 using DAL.Entities;
 using DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DAL.Repositories
 {
@@ -11,6 +9,11 @@ namespace DAL.Repositories
     {
         public UserRepository(ApplicationContext applicationcontext): base(applicationcontext)
         {
+        }
+
+        public User GetUserByEmailAndPass(string email, string password)
+        {
+            return dbContext.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
         }
     }
 }
