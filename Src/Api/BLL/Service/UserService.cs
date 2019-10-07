@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using BLL.DTOEntities;
+using BLL.Options;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace BLL.Service
 {
@@ -16,7 +18,17 @@ namespace BLL.Service
         public UserService(IUnitOfWork database)
         {
             _database = database;
-            _mapper = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>()).CreateMapper();
+            _mapper = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<User, UserDTO>();
+                cfg.CreateMap<Comment, CommentDTO>();
+                cfg.CreateMap<Post, PostDTO>();
+                cfg.CreateMap<UserDTO, User>();
+                cfg.CreateMap<CommentDTO, Comment>();
+                cfg.CreateMap<PostDTO, Post>();
+            }).CreateMapper();
+
+            var hspass = new PasswordHashService();
         }
 
         public UserDTO GetUserById(int id)
@@ -29,6 +41,8 @@ namespace BLL.Service
 
         public UserDTO GetUserByEmailAndPass(string email, string password)
         {
+            var pass = PasswordHashService.Hash(password);
+            var res = PasswordHashService.Check(pass, password);
             var user = _database.Users.GetUserByEmailAndPass(email, password);
 
             return _mapper.Map<User, UserDTO>(user);
@@ -38,10 +52,15 @@ namespace BLL.Service
         {
             var user = _mapper.Map<UserDTO, User>(userDTO);
 
+            var pass = PasswordHashService.Hash(userDTO.Password);
+
+            user.Password = pass;
+
             _database.Users.Add(user);
             _database.Save();
 
             return _mapper.Map<User, UserDTO>(user);
+            //return userDTO;
         }
 
         public UserDTO UpdateUserDTO(UserDTO userDTO)
@@ -67,5 +86,6 @@ namespace BLL.Service
         {
             return _mapper.Map<IEnumerable<User>, ICollection<UserDTO>>(_database.Users.GetAll());
         }
+
     }
 }
