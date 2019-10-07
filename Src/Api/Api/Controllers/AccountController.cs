@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Api.Auth;
 using BLL;
+using BLL.DTOEntities;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 
