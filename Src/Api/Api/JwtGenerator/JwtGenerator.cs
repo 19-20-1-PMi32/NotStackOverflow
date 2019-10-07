@@ -30,8 +30,8 @@ namespace Api.JwtGenerator
 
         public string GetToken(string username, string password)
         {
-            
             var user = _userService.GetUserByEmailAndPass(username, password);
+
             var identity = _accountService.GetIdentity(user.Email, user.Role);
             if (identity == null)
             {
@@ -48,6 +48,7 @@ namespace Api.JwtGenerator
                 claims: identity.Claims,
                 expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             var response = new
@@ -56,8 +57,6 @@ namespace Api.JwtGenerator
                 username = identity.Name
             };
 
-           
-           
             return JsonConvert.SerializeObject(response, new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented

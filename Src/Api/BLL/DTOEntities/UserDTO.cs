@@ -30,5 +30,5 @@ namespace BLL.DTOEntities
         }
     }
 
- 
+
 }

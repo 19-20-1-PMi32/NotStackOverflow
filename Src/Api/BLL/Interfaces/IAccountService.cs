@@ -8,5 +8,6 @@ namespace BLL.Interfaces
     public interface IAccountService
     {
         ClaimsIdentity GetIdentity(string email, string role);
+
     }
 }
