@@ -7,7 +7,15 @@ namespace BLL.Interfaces
 {
     public interface IAccountService
     {
-        ClaimsIdentity GetIdentity(string email, string role);
+        ClaimsIdentity GetIdentity(string name, string email, string role);
+
+        ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
+
+        string GenerateRefreshToken();
+
+        string GetAccessToken(string username, string password);
+
+        (string, string) RefreshToken(string token, string refreshToken);
 
     }
 }
