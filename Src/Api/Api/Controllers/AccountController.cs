@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using Api.Auth;
 using BLL;
 using BLL.DTOEntities;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Linq;
 
 namespace Api.Controllers
 {
@@ -36,12 +36,21 @@ namespace Api.Controllers
            var email = Request.Form["email"];
            var password = Request.Form["password"];
 
-            var jwtToken = new JwtGenerator.JwtGenerator(_userService, _accountService);
+           var jwtToken = _accountService.GetAccessToken(email, password);
 
             Response.ContentType = "application/json";
 
-            await Response.WriteAsync(jwtToken.GetToken(email, password));
+            await Response.WriteAsync(jwtToken);
 
+        }
+
+        [HttpPost("refresh")]
+        public IActionResult Refresh([FromBody]JObject data)
+        {
+            var token = data["token"].ToString();
+            var refreshToken = data["refreshToken"].ToString();
+
+            return Ok(_accountService.RefreshToken(token, refreshToken));
         }
     }
 }
