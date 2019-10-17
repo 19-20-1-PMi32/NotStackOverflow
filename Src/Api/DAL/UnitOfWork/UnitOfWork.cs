@@ -25,6 +25,8 @@ namespace DAL.UnitOfWork
 
         public IUserRepository Users { get; }
 
+        public IAuthorizedUsersRepository AuthorizedUsers { get; }
+
         public UnitOfWork(ApplicationContext applicationContext)
         {
             _dbContext = applicationContext;
@@ -35,13 +37,13 @@ namespace DAL.UnitOfWork
             Tags = new TagRepository(applicationContext);
             UserAchievements = new UserAchievementsRepository(applicationContext);
             Users = new UserRepository(applicationContext);
+            AuthorizedUsers = new AuthorizedUsersRepository(applicationContext);
         }
 
         public void Save()
         {
             _dbContext.SaveChanges();
         }
-
 
         public void Dispose()
         {

@@ -32,11 +32,11 @@ namespace Api.Controllers
 
         [HttpPost("token")]
         public async Task Token()
-        {
-           var email = Request.Form["email"];
-           var password = Request.Form["password"];
+        { 
+            var email = Request.Form["email"];
+            var password = Request.Form["password"];
 
-           var jwtToken = _accountService.GetAccessToken(email, password);
+            var jwtToken = _accountService.Authenticate(email, password);
 
             Response.ContentType = "application/json";
 

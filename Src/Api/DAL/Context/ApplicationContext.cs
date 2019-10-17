@@ -18,6 +18,8 @@ namespace DAL.Context
         public DbSet<PostTags> PostTags { get; set; }
         public DbSet<UserAchievements> UserAchievements { get; set; }
 
+        public DbSet<AuthorizedUser> AuthorizedUsers { get; set; }  
+
         public ApplicationContext()
         {
             Database.EnsureCreated();
@@ -32,6 +34,7 @@ namespace DAL.Context
             modelBuilder.ApplyConfiguration(new TagConfig());
             modelBuilder.ApplyConfiguration(new UserAchievementsConfig());
             modelBuilder.ApplyConfiguration(new UserConfig());
+            modelBuilder.ApplyConfiguration(new AuthorizedUserConfig());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

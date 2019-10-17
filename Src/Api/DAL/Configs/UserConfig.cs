@@ -13,6 +13,8 @@ namespace DAL.Configs
         {
             builder.HasKey(b => b.Id);
 
+            builder.HasIndex(b => b.Email).IsUnique(true);
+
             builder.Property(b => b.Name)
                 .IsRequired();
 
@@ -34,9 +36,6 @@ namespace DAL.Configs
 
             builder.Property(b => b.Rating)
                 .HasDefaultValue(0);
-
-           
-
         }
     }
 }
