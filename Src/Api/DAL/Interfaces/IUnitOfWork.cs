@@ -20,6 +20,8 @@ namespace DAL.Interfaces
 
         IUserRepository Users { get; }
 
+        IAuthorizedUsersRepository AuthorizedUsers { get; }
+
         void Save();
     }
 }

@@ -11,9 +11,7 @@ namespace BLL.Interfaces
 
         ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
 
-        string GenerateRefreshToken();
-
-        string GetAccessToken(string username, string password);
+        string Authenticate(string email, string password);
 
         (string, string) RefreshToken(string token, string refreshToken);
 

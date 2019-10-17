@@ -43,7 +43,7 @@ namespace BLL.Service
         {
             var pass = PasswordHashService.Hash(password);
             var res = PasswordHashService.Check(pass, password);
-            var user = _database.Users.GetUserByEmailAndPass(email, password);
+            var user = _database.Users.GetUserByEmail(email);
 
             return _mapper.Map<User, UserDTO>(user);
         }
