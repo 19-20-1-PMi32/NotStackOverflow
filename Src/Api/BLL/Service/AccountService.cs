@@ -2,29 +2,25 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Runtime.Serialization;
+using System.Security;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
-using AutoMapper;
-using BLL.DTOEntities;
 using BLL.Interfaces;
 using DAL.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using BLL.AuthOptions;
+using DAL.Entities;
 
 namespace BLL.Service
 {
     public class AccountService : IAccountService
     {
         private readonly IUnitOfWork _database;
-        private readonly IMapper _mapper;
 
         public AccountService(IUnitOfWork database)
         {
             _database = database;
-            //_mapper = new MapperConfiguration(cfg => cfg.CreateMap<User, UserDTO>()).CreateMapper();
         }
 
         public ClaimsIdentity GetIdentity(string name, string email, string role)
@@ -35,7 +31,7 @@ namespace BLL.Service
                 new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, role),
             };
-            ClaimsIdentity claimsIdentity =
+            var claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
                     ClaimsIdentity.DefaultRoleClaimType);
             
@@ -56,28 +52,56 @@ namespace BLL.Service
             return principal;
         }
 
-        public string GenerateRefreshToken()
+        public string Authenticate(string username, string password)
         {
-            var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
+            var accessToken = GetAccessToken(username, password);
+
+            var refreshToken = GenerateRefreshToken();
+
+            _database.AuthorizedUsers.Add(new AuthorizedUser {Email = username, RefreshToken = refreshToken});
+
+            var response = new
             {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
+                access_token = accessToken,
+                refresh_token = refreshToken
+            };
+
+            _database.Save();
+
+            return JsonConvert.SerializeObject(response, new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented
+            });
         }
 
-        public string GetAccessToken(string username, string password)
+        public (string, string) RefreshToken(string token, string refreshToken)
         {
-            var user = _database.Users.GetUserByEmailAndPass(username, password);
+            var principal = GetPrincipalFromExpiredToken(token);
 
-            var identity = GetIdentity(user.Name, user.Email, user.Role);
+            var email =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Email);
+            var role =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Role);
 
-            return identity == null ? 
-                "Invalid username or password." :
-                GenerateToken(identity);
+            if (email == null || role == null)
+            {
+                throw new Exception("Bad Claims");
+            }
+
+            var authorizedUser = _database.AuthorizedUsers.GetAuthorizedUser(email.Value); //retrieve the refresh token from a data store
+            if (authorizedUser.RefreshToken != refreshToken)
+                throw new SecurityTokenException("Invalid refresh token");
+
+            var newAccessToken = GenerateToken(GetIdentity(principal.Identity.Name, email.Value, role.Value));
+            var newRefreshToken = GenerateRefreshToken();
+
+            authorizedUser.RefreshToken = newRefreshToken;
+            _database.AuthorizedUsers.Update(authorizedUser);
+
+            _database.Save();
+
+            return (newAccessToken, newRefreshToken);
         }
 
-        public string GenerateToken(ClaimsIdentity identity)
+        private string GenerateToken(ClaimsIdentity identity)
         {
             var now = DateTime.UtcNow;
 
@@ -91,41 +115,36 @@ namespace BLL.Service
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            var response = new
-            {
-                access_token = encodedJwt,
-                username = identity.Name
-            };
-
-            return JsonConvert.SerializeObject(response, new JsonSerializerSettings
-            {
-                Formatting = Formatting.Indented
-            });
+            return encodedJwt;
         }
 
-        public (string, string) RefreshToken(string token, string refreshToken)
+        private string GetAccessToken(string username, string password)
         {
-            var principal = GetPrincipalFromExpiredToken(token);
-            
-            var email =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Email);
-            var role =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Role);
+            var user = _database.Users.GetUserByEmail(username);
 
-            if (email == null || role == null)
+            var userHashPass = PasswordHashService.Hash(password);
+
+            if (!PasswordHashService.Check(userHashPass, user.Password).Verified)
             {
-                throw new Exception("Bad Claims");
+                throw new SecurityException("Invalid email or password");
             }
-               //var savedRefreshToken = GetRefreshToken(username); //retrieve the refresh token from a data store
-            //if (savedRefreshToken != refreshToken)
-            //    throw new SecurityTokenException("Invalid refresh token");
-            // need to add implementation of logic that will get existing refresh token of user and check for it equality 
 
-            var newAccessToken = GenerateToken(GetIdentity(principal.Identity.Name, email.Value, role.Value));
-            var newRefreshToken = GenerateRefreshToken();
+            var identity = GetIdentity(user.Name, user.Email, user.Role);
 
-            //update new refresh token to user
-
-            return (newAccessToken, newRefreshToken);
-
+            return identity == null ?
+                "Invalid username or password." :
+                GenerateToken(identity);
         }
+
+        private string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
+
     }
 }
