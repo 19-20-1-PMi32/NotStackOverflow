@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using BLL.DTOEntities;
 
-namespace BLL
+namespace BLL.Interfaces
 {
     public interface IUserService
     {
@@ -13,7 +13,7 @@ namespace BLL
 
         UserDTO CreateUser(UserDTO user);
 
-        UserDTO UpdateUserDTO(UserDTO user);
+        UserDTO UpdateUser(UserDTO user);
 
         void RemoveUser(int id);
 

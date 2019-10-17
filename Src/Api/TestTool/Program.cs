@@ -1,18 +1,8 @@
-﻿using DAL.Context;
-using DAL.Entities;
-using DAL.Repositories;
-using System;
-using System.Collections.Generic;
-using Autofac;
-using BLL;
+﻿using Autofac;
 using BLL.DTOEntities;
+using BLL.Interfaces;
 using BLL.Module;
-using BLL.Service;
-using DAL.DI;
 using DAL.Interfaces;
-using DAL.UnitOfWork;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace TestTool
 {
