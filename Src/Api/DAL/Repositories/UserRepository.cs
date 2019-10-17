@@ -11,9 +11,9 @@ namespace DAL.Repositories
         {
         }
 
-        public User GetUserByEmailAndPass(string email, string password)
+        public User GetUserByEmail(string email)
         {
-            return dbContext.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            return dbContext.Users.FirstOrDefault(u => u.Email == email);
         }
     }
 }
