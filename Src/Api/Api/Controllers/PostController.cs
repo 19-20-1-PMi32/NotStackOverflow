@@ -25,5 +25,23 @@ namespace Api.Controllers
         {
             return Ok(_postService.CreatePost(postDTO));
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetPostById(int id)
+        {
+            return Ok(_postService.GetPostById(id));
+        }
+
+        [HttpGet("all")]
+        public IActionResult GetAllPosts()
+        {
+            return Ok(_postService.GetPostList());
+        }
+
+        [HttpGet("issue/{postId}")]
+        public IActionResult GetPostWithComments(int postId)
+        {
+            return Ok(_postService.GetPostsWithComments(postId));
+        }
     }
 }

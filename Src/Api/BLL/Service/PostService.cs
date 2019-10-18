@@ -48,15 +48,54 @@ namespace BLL.Service
             return _mapper.Map<Post, PostDTO>(post);
         }
 
-        public PostDTO UpdatePost(PostDTO postDTO)
-        {
-            var post = _mapper.Map<PostDTO, Post>(postDTO);
+        #region UpdateRegion
 
+        public int UpdateDownVotes(int id)
+        {
+            var post = _database.Posts.GetById(id);
+
+            ++post.DownVotes;
             _database.Posts.Update(post);
             _database.Save();
 
-            return _mapper.Map<Post, PostDTO>(post);
+            return post.DownVotes;
         }
+
+        public int UpdateUpVotes(int id)
+        {
+            var post = _database.Posts.GetById(id);
+
+            ++post.UpVotes;
+            _database.Posts.Update(post);
+            _database.Save();
+
+            return post.UpVotes;
+        }
+
+        public string UpdateText(int id, string text)
+        {
+            var post = _database.Posts.GetById(id);
+
+            post.Text = text;
+            _database.Posts.Update(post);
+            _database.Save();
+
+            return post.Text;
+        }
+
+        public int UpdateViews(int id)
+        {
+            var post = _database.Posts.GetById(id);
+
+            ++post.Viewed;
+            _database.Posts.Update(post);
+            _database.Save();
+
+            return post.Viewed;
+        }
+
+
+        #endregion
 
         public void RemovePost(int id)
         {
@@ -68,7 +107,17 @@ namespace BLL.Service
 
         public PostDTO GetPostById(int id)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<Post, PostDTO>(_database.Posts.GetById(id));
+        }
+
+        public IEnumerable<PostDTO> GetPostsWithComments(int postId)
+        {
+            return _mapper.Map<IEnumerable<Post>, List<PostDTO>>(_database.Posts.GetPostsWithComments(postId));
+        }
+
+        public IEnumerable<PostDTO> GetPostList()
+        {
+            return _mapper.Map<IEnumerable<Post>, List<PostDTO>>(_database.Posts.GetPostList());
         }
     }
 }

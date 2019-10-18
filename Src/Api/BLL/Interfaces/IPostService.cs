@@ -9,12 +9,20 @@ namespace BLL.Interfaces
     {
         PostDTO CreatePost(PostDTO postDTO);
 
-        PostDTO UpdatePost(PostDTO postDTO);
+        int UpdateDownVotes(int id);
+
+        int UpdateUpVotes(int id);
+
+        string UpdateText(int id, string text);
+
+        int UpdateViews(int id);
 
         void RemovePost(int id);
 
         PostDTO GetPostById(int id);
 
+        IEnumerable<PostDTO> GetPostsWithComments(int postId);
 
+        IEnumerable<PostDTO> GetPostList();
     }
 }
