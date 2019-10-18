@@ -110,14 +110,14 @@ namespace BLL.Service
             return _mapper.Map<Post, PostDTO>(_database.Posts.GetById(id));
         }
 
-        public IEnumerable<PostDTO> GetPostsWithComments(int postId)
+        public IEnumerable<PostDTO> GetPostsWithComments(int postId, int startFrom, int amount)
         {
-            return _mapper.Map<IEnumerable<Post>, List<PostDTO>>(_database.Posts.GetPostsWithComments(postId));
+            return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostsWithComments(postId, startFrom, amount));
         }
 
-        public IEnumerable<PostDTO> GetPostList()
+        public IEnumerable<PostDTO> GetPostList(int startFrom, int amount)
         {
-            return _mapper.Map<IEnumerable<Post>, List<PostDTO>>(_database.Posts.GetPostList());
+            return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostList(startFrom, amount));
         }
     }
 }

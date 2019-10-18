@@ -32,16 +32,16 @@ namespace Api.Controllers
             return Ok(_postService.GetPostById(id));
         }
 
-        [HttpGet("all")]
-        public IActionResult GetAllPosts()
+        [HttpGet("all/{startFrom}/{amount}")]
+        public IActionResult GetAllPosts(int startFrom, int amount)
         {
-            return Ok(_postService.GetPostList());
+            return Ok(_postService.GetPostList(startFrom, amount));
         }
 
-        [HttpGet("issue/{postId}")]
-        public IActionResult GetPostWithComments(int postId)
+        [HttpGet("issue/{postId}/{startFrom}/{amount}")]
+        public IActionResult GetPostWithComments(int postId, int startFrom, int amount)
         {
-            return Ok(_postService.GetPostsWithComments(postId));
+            return Ok(_postService.GetPostsWithComments(postId, startFrom, amount));
         }
     }
 }

@@ -21,17 +21,23 @@ namespace DAL.Repositories
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Post> GetPostsWithComments(int postId)
+        public IEnumerable<Post> GetPostsWithComments(int postId, int startFrom, int amount)
         {
             return dbContext.Posts
+                .Skip(startFrom)
+                .Take(amount)
                 .Where(p => p.PostId == postId)
                 .Include(p => p.Comments)
                 .ToList();
         }
 
-        public IEnumerable<Post> GetPostList()
+        public IEnumerable<Post> GetPostList(int startFrom, int amount)
         {
-            return dbContext.Posts.ToList();
+            return dbContext.Posts
+                .Skip(startFrom)
+                .Take(amount)
+                .Include(p => p.Comments)
+                .ToList();
         }
     }
 }

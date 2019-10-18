@@ -7,8 +7,8 @@ namespace DAL.Interfaces
 {
     public interface IPostRepository : IRepository<Post>
     {
-        IEnumerable<Post> GetPostsWithComments(int postId);
+        IEnumerable<Post> GetPostsWithComments(int postId, int startFrom, int amount);
 
-        IEnumerable<Post> GetPostList();
+        IEnumerable<Post> GetPostList(int startFrom, int amount);
     }
 }

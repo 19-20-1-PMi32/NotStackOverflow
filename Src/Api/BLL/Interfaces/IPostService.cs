@@ -21,8 +21,8 @@ namespace BLL.Interfaces
 
         PostDTO GetPostById(int id);
 
-        IEnumerable<PostDTO> GetPostsWithComments(int postId);
+        IEnumerable<PostDTO> GetPostsWithComments(int postId, int startFrom, int amount);
 
-        IEnumerable<PostDTO> GetPostList();
+        IEnumerable<PostDTO> GetPostList(int startFrom, int amount);
     }
 }
