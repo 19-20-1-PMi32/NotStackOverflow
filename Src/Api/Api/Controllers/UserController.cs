@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BLL;
-using BLL.DTOEntities;
-using Microsoft.AspNetCore.Http;
+﻿using BLL.DTOEntities;
+using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers

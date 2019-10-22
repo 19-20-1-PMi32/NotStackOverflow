@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using BLL.DTOEntities;
+using BLL.Interfaces;
 using BLL.Options;
 using DAL.Entities;
 using DAL.Interfaces;
@@ -63,7 +64,7 @@ namespace BLL.Service
             //return userDTO;
         }
 
-        public UserDTO UpdateUserDTO(UserDTO userDTO)
+        public UserDTO UpdateUser(UserDTO userDTO)
         {
             var user = _mapper.Map<UserDTO, User>(userDTO);
 

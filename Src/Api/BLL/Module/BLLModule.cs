@@ -32,6 +32,7 @@ namespace BLL.Module
             builder.RegisterType<UserService>().As<IUserService>();
 
             builder.RegisterType<CommentService>().As<ICommentService>();
+            builder.RegisterType<PostService>().As<IPostService>();
             builder.RegisterModule<DALModule>();
             base.Load(builder);
         }
