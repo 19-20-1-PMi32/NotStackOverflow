@@ -13,6 +13,5 @@ namespace BLL.DTOEntities
         public UserDTO User { get; set; }
 
         public int PostId { get; set; }
-        public PostDTO Post { get; set; }
     }
 }
