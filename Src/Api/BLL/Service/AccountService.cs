@@ -23,13 +23,14 @@ namespace BLL.Service
             _database = database;
         }
 
-        public ClaimsIdentity GetIdentity(string name, string email, string role)
+        private ClaimsIdentity GetIdentity(string name, string email, string role, int tokenId)
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, name),
                 new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, role),
+                new Claim("tokenId", tokenId.ToString())
             };
             var claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
@@ -38,7 +39,7 @@ namespace BLL.Service
             return claimsIdentity;
         }
 
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -54,19 +55,19 @@ namespace BLL.Service
 
         public string Authenticate(string username, string password)
         {
-            var accessToken = GetAccessToken(username, password);
-
             var refreshToken = GenerateRefreshToken();
 
-            _database.AuthorizedUsers.Add(new AuthorizedUser {Email = username, RefreshToken = refreshToken});
+            var authorizedUser = new AuthorizedUser {Email = username, RefreshToken = refreshToken};
+            _database.AuthorizedUsers.Add(authorizedUser);
+            _database.Save();
+
+            var accessToken = GetAccessToken(authorizedUser.Id,username, password);
 
             var response = new
             {
                 access_token = accessToken,
                 refresh_token = refreshToken
             };
-
-            _database.Save();
 
             return JsonConvert.SerializeObject(response, new JsonSerializerSettings()
             {
@@ -80,17 +81,18 @@ namespace BLL.Service
 
             var email =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Email);
             var role =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Role);
+            var tokenId = principal.Claims.FirstOrDefault(user => user.Type == "tokenId");
 
-            if (email == null || role == null)
+            if (email == null || role == null || tokenId == null)
             {
                 throw new Exception("Bad Claims");
             }
 
-            var authorizedUser = _database.AuthorizedUsers.GetAuthorizedUser(email.Value); //retrieve the refresh token from a data store
+            var authorizedUser = _database.AuthorizedUsers.GetById(Convert.ToInt32(tokenId.Value)); //retrieve the refresh token from a data store
             if (authorizedUser.RefreshToken != refreshToken)
                 throw new SecurityTokenException("Invalid refresh token");
 
-            var newAccessToken = GenerateToken(GetIdentity(principal.Identity.Name, email.Value, role.Value));
+            var newAccessToken = GenerateToken(GetIdentity(principal.Identity.Name, email.Value, role.Value, 1));
             var newRefreshToken = GenerateRefreshToken();
 
             authorizedUser.RefreshToken = newRefreshToken;
@@ -118,7 +120,7 @@ namespace BLL.Service
             return encodedJwt;
         }
 
-        private string GetAccessToken(string username, string password)
+        private string GetAccessToken(int tokenId, string username, string password)
         {
             var user = _database.Users.GetUserByEmail(username);
 
@@ -129,7 +131,7 @@ namespace BLL.Service
                 throw new SecurityException("Invalid email or password");
             }
 
-            var identity = GetIdentity(user.Name, user.Email, user.Role);
+            var identity = GetIdentity(user.Name, user.Email, user.Role, tokenId);
 
             return identity == null ?
                 "Invalid username or password." :
