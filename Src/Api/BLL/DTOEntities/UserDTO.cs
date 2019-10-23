@@ -9,16 +9,21 @@ namespace BLL.DTOEntities
     {
         public int Id { get; set; }
         public string NickName { get; set; }
+        
         [Required]
         public string Name { get; set; }
+        
         [Required]
         public string Surname { get; set; }
+        
         [Required]
         public string Password { get; set; }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
         public string Job { get; set; }
+        
         [Required]
         public string Role { get; set; }
         public int Rating { get; set; }
