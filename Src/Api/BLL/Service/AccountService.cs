@@ -23,6 +23,65 @@ namespace BLL.Service
             _database = database;
         }
 
+        public string Authenticate(string username, string password)
+        {
+            var refreshToken = GenerateRefreshToken();
+
+            var authorizedUser = new AuthorizedUser {Email = username, RefreshToken = refreshToken};
+            _database.AuthorizedUsers.Add(authorizedUser);
+            _database.Save();
+
+            var accessToken = GetAccessToken(authorizedUser.Id,username, password);
+
+            var response = new
+            {
+                access_token = accessToken,
+                refresh_token = refreshToken
+            };
+
+            return JsonConvert.SerializeObject(response, new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented
+            });
+        }
+
+        public string RefreshToken(string token, string refreshToken)
+        {
+            var principal = GetPrincipalFromExpiredToken(token);
+
+            var email =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Email);
+            var role =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Role);
+            var tokenId = principal.Claims.FirstOrDefault(user => user.Type == "tokenId");
+
+            if (email == null || role == null || tokenId == null)
+            {
+                throw new Exception("Bad Claims");
+            }
+
+            var authorizedUser = _database.AuthorizedUsers.GetById(Convert.ToInt32(tokenId.Value)); //retrieve the refresh token from a data store
+            if (authorizedUser.RefreshToken != refreshToken)
+                throw new SecurityTokenException("Invalid refresh token");
+
+            var newAccessToken = GenerateToken(GetIdentity(principal.Identity.Name, email.Value, role.Value, 1));
+            var newRefreshToken = GenerateRefreshToken();
+
+            authorizedUser.RefreshToken = newRefreshToken;
+            _database.AuthorizedUsers.Update(authorizedUser);
+
+            _database.Save();
+
+            var response = new
+            {
+                access_token = newAccessToken,
+                refresh_token = newRefreshToken
+            };
+
+            return JsonConvert.SerializeObject(response, new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented
+            });
+        }
+
         private ClaimsIdentity GetIdentity(string name, string email, string role, int tokenId)
         {
             var claims = new List<Claim>
@@ -51,56 +110,6 @@ namespace BLL.Service
                 throw new SecurityTokenException("Invalid token");
 
             return principal;
-        }
-
-        public string Authenticate(string username, string password)
-        {
-            var refreshToken = GenerateRefreshToken();
-
-            var authorizedUser = new AuthorizedUser {Email = username, RefreshToken = refreshToken};
-            _database.AuthorizedUsers.Add(authorizedUser);
-            _database.Save();
-
-            var accessToken = GetAccessToken(authorizedUser.Id,username, password);
-
-            var response = new
-            {
-                access_token = accessToken,
-                refresh_token = refreshToken
-            };
-
-            return JsonConvert.SerializeObject(response, new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented
-            });
-        }
-
-        public (string, string) RefreshToken(string token, string refreshToken)
-        {
-            var principal = GetPrincipalFromExpiredToken(token);
-
-            var email =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Email);
-            var role =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Role);
-            var tokenId = principal.Claims.FirstOrDefault(user => user.Type == "tokenId");
-
-            if (email == null || role == null || tokenId == null)
-            {
-                throw new Exception("Bad Claims");
-            }
-
-            var authorizedUser = _database.AuthorizedUsers.GetById(Convert.ToInt32(tokenId.Value)); //retrieve the refresh token from a data store
-            if (authorizedUser.RefreshToken != refreshToken)
-                throw new SecurityTokenException("Invalid refresh token");
-
-            var newAccessToken = GenerateToken(GetIdentity(principal.Identity.Name, email.Value, role.Value, 1));
-            var newRefreshToken = GenerateRefreshToken();
-
-            authorizedUser.RefreshToken = newRefreshToken;
-            _database.AuthorizedUsers.Update(authorizedUser);
-
-            _database.Save();
-
-            return (newAccessToken, newRefreshToken);
         }
 
         private string GenerateToken(ClaimsIdentity identity)

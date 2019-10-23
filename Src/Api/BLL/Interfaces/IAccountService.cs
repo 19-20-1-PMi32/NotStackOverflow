@@ -9,7 +9,7 @@ namespace BLL.Interfaces
     {
         string Authenticate(string email, string password);
 
-        (string, string) RefreshToken(string token, string refreshToken);
+        string RefreshToken(string token, string refreshToken);
 
     }
 }
