@@ -11,7 +11,7 @@ namespace DAL.Entities
         public DateTime DateOfPublish { get; set; }
         public string Text { get; set; }
 
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
 
         public int PostId { get; set; }
