@@ -34,7 +34,6 @@ namespace Api
                     options.TokenValidationParameters = JWTValidationParameters.TokenValidationParameters;
                 });
 
-            
             var builder = new ContainerBuilder();
             builder.RegisterModule(new BLLModule());
             builder.Populate(services);
