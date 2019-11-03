@@ -6,6 +6,7 @@ using BLL.DTOEntities;
 using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace BLL.Service
 {
@@ -19,16 +20,26 @@ namespace BLL.Service
             _database = database;
             _mapper = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Comment, CommentDTO>();
-                cfg.CreateMap<Post, PostDTO>();
-                cfg.CreateMap<CommentDTO, Comment>();
-                cfg.CreateMap<PostDTO, Post>();
+                cfg.CreateMap<CommentDTO, Comment>().ReverseMap();
+                cfg.CreateMap<PostDTO, Post>()
+                    .ForMember(p => p.PostTags, opt => opt.Ignore())
+                    .ReverseMap()
+                    .ForMember(p => p.Tags, opt => opt.Ignore())
+                    .ForMember(p => p.PostTags, opt => opt.Ignore());
+                cfg.CreateMap<TagDTO, Tag>().ReverseMap();
             }).CreateMapper();
         }
 
         public PostDTO CreatePost(PostDTO postDTO)
         {
             var post = _mapper.Map<PostDTO, Post>(postDTO);
+
+            if (postDTO.Tags.Any())
+                foreach (var tagId in postDTO.Tags)
+                {
+                    var postTags = new PostTags() {Post = post, TagId = tagId};
+                    post.PostTags.Add(postTags);
+                }
 
             if (postDTO.PostId != 0)
             {
