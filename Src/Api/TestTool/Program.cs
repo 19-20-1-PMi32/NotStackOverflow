@@ -15,15 +15,15 @@ namespace TestTool
             {
                 var uof = container.Resolve<IUnitOfWork>();
                 var userService = container.Resolve<IUserService>();
-                userService.CreateUser(new UserDTO()
-                {
-                    Name = "Maks",
-                    Password = "Maks500",
-                    Surname = "Maks",
-                    Role = "Admin",
-                    Rating = 0,
-                    Email= "Maks@gmail.com",
-                });
+                //userService.CreateUser(new UserDTO()
+                //{
+                //    Name = "Maks",
+                //    Password = "Maks500",
+                //    Surname = "Maks",
+                //    Role = "Admin",
+                //    Rating = 0,
+                //    Email= "Maks@gmail.com",
+                //});
                 //var user = userService.GetUserById(1);
                 //Console.WriteLine($"{user.Email}  {user.Password}  {user.GetType()}");
 

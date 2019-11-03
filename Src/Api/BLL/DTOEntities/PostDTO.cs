@@ -17,7 +17,8 @@ namespace BLL.DTOEntities
         [Required]
         public DateTime DateOfPublish { get; set; }
 
-        public ICollection<PostTagsDTO> PostTags { get; set; }
+        public ICollection<int> Tags { get; set; }
+        public ICollection<TagDTO> PostTags { get; set; }
         public ICollection<CommentDTO> Comments { get; set; }
 
         [Required]
@@ -26,7 +27,8 @@ namespace BLL.DTOEntities
 
         public PostDTO()
         {
-            PostTags = new HashSet<PostTagsDTO>();
+            Tags = new HashSet<int>();
+            PostTags = new HashSet<TagDTO>();
             Comments = new HashSet<CommentDTO>();
         }
     }

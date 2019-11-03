@@ -32,6 +32,12 @@ namespace Api.Controllers
             return Ok(_postService.GetPostById(id));
         }
 
+        [HttpPut("{id}")]
+        public IActionResult UpdateText(int id, string text)
+        {
+            return Ok(_postService.UpdateText(id, text));
+        }
+
         [HttpGet("all/{startFrom}/{amount}")]
         public IActionResult GetAllPosts(int startFrom, int amount)
         {
