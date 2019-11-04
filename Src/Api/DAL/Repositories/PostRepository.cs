@@ -18,6 +18,8 @@ namespace DAL.Repositories
         {
             return dbContext.Posts
                 .Include(p => p.Comments)
+                .Include(p => p.PostTags)
+                    .ThenInclude(pt => pt.Tag)
                 .FirstOrDefault(p => p.Id == id);
         }
 
