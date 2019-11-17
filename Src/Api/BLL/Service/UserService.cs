@@ -55,6 +55,10 @@ namespace BLL.Service
             var pass = PasswordHashService.Hash(userDTO.Password);
 
             var user = userDTO.ToUser();
+            if (string.IsNullOrWhiteSpace(userDTO.Role))
+            {
+                user.Role = "User";
+            }
             user.Password = pass;
 
             _database.Users.Add(user);
