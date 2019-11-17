@@ -11,7 +11,7 @@ namespace BLL.Interfaces
         
         UserDTO GetUserByEmailAndPass(string email, string password);
 
-        UserDTO CreateUser(UserDTO user);
+        UserDTO CreateUser(CreateUserDTO user);
 
         UserDTO UpdateUser(UserDTO user);
 

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLL.DTOEntities;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -21,7 +23,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult CreatePost(PostDTO postDTO)
+        public IActionResult CreatePost(CreatePostDTO postDTO)
         {
             return Ok(_postService.CreatePost(postDTO));
         }
@@ -38,6 +40,14 @@ namespace Api.Controllers
             return Ok(_postService.UpdateText(id, text));
         }
 
+        [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeletePost(int id)
+        {
+            _postService.RemovePost(id);
+            return Ok("Deleted");
+        }
+
         [HttpGet("all/{startFrom}/{amount}")]
         public IActionResult GetAllPosts(int startFrom, int amount)
         {
@@ -48,6 +58,12 @@ namespace Api.Controllers
         public IActionResult GetPostWithComments(int postId, int startFrom, int amount)
         {
             return Ok(_postService.GetPostsWithComments(postId, startFrom, amount));
+        }
+
+        [HttpGet("user/{userId}")]
+        public IActionResult GetUsersPosts(int userId)
+        {
+            return Ok(_postService.GetUsersPostById(userId));
         }
     }
 }

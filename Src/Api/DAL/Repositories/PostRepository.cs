@@ -20,6 +20,7 @@ namespace DAL.Repositories
                 .Include(p => p.Comments)
                 .Include(p => p.PostTags)
                     .ThenInclude(pt => pt.Tag)
+                .Include(p => p.User)
                 .FirstOrDefault(p => p.Id == id);
         }
 
@@ -30,6 +31,7 @@ namespace DAL.Repositories
                 .Take(amount)
                 .Where(p => p.PostId == postId)
                 .Include(p => p.Comments)
+                .Include(p => p.User)
                 .ToList();
         }
 
@@ -39,6 +41,13 @@ namespace DAL.Repositories
                 .Skip(startFrom)
                 .Take(amount)
                 .Include(p => p.Comments)
+                .ToList();
+        }
+
+        public IEnumerable<Post> GetUsersPostsById(int userId)
+        {
+            return dbContext.Posts
+                .Where(p => p.UserId == userId)
                 .ToList();
         }
     }
