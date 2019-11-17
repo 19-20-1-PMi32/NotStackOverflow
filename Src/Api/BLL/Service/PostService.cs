@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using AutoMapper;
 using BLL.DTOEntities;
 using BLL.Interfaces;
+using BLL.Mapping;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore.Internal;
+using Newtonsoft.Json;
 
 namespace BLL.Service
 {
@@ -30,11 +33,11 @@ namespace BLL.Service
             }).CreateMapper();
         }
 
-        public PostDTO CreatePost(PostDTO postDTO)
+        public PostDTO CreatePost(CreatePostDTO postDTO)
         {
-            var post = _mapper.Map<PostDTO, Post>(postDTO);
+            var post = postDTO.ToPost();
 
-            if (postDTO.Tags.Any())
+            if (EnumerableExtensions.Any(postDTO.Tags))
                 foreach (var tagId in postDTO.Tags)
                 {
                     var postTags = new PostTags() {Post = post, TagId = tagId};
@@ -56,7 +59,7 @@ namespace BLL.Service
             }
 
             _database.Save();
-            return _mapper.Map<Post, PostDTO>(post);
+            return post.ToPostDTO();
         }
 
         #region UpdateRegion
@@ -118,17 +121,24 @@ namespace BLL.Service
 
         public PostDTO GetPostById(int id)
         {
-            return _mapper.Map<Post, PostDTO>(_database.Posts.GetById(id));
+            return _database.Posts.GetById(id).ToPostDTO();
         }
 
         public IEnumerable<PostDTO> GetPostsWithComments(int postId, int startFrom, int amount)
         {
-            return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostsWithComments(postId, startFrom, amount));
+            //return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostsWithComments(postId, startFrom, amount));
+            return _database.Posts.GetPostsWithComments(postId, startFrom, amount).Select(p => p.ToPostDTO());
         }
 
         public IEnumerable<PostDTO> GetPostList(int startFrom, int amount)
         {
             return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostList(startFrom, amount));
+        }
+
+        public IEnumerable<PreviewPostDTO> GetUsersPostById(int userId)
+        {
+            return _database.Posts.GetUsersPostsById(userId)
+                .Select(p => p.ToPreviewPostDTO());
         }
     }
 }

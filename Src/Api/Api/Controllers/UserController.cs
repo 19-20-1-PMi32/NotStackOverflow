@@ -16,7 +16,7 @@ namespace Api.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register(UserDTO userDTO)
+        public IActionResult Register(CreateUserDTO userDTO)
         {
             return Ok(_userService.CreateUser(userDTO));
         }

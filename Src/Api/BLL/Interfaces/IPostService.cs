@@ -7,7 +7,7 @@ namespace BLL.Interfaces
 {
     public interface IPostService
     {
-        PostDTO CreatePost(PostDTO postDTO);
+        PostDTO CreatePost(CreatePostDTO postDTO);
 
         int UpdateDownVotes(int id);
 
@@ -24,5 +24,7 @@ namespace BLL.Interfaces
         IEnumerable<PostDTO> GetPostsWithComments(int postId, int startFrom, int amount);
 
         IEnumerable<PostDTO> GetPostList(int startFrom, int amount);
+
+        IEnumerable<PreviewPostDTO> GetUsersPostById(int userId);
     }
 }

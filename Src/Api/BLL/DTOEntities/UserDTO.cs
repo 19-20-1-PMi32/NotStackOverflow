@@ -24,7 +24,6 @@ namespace BLL.DTOEntities
         public string Email { get; set; }
         public string Job { get; set; }
         
-        [Required]
         public string Role { get; set; }
         public int Rating { get; set; }
 
@@ -40,6 +39,12 @@ namespace BLL.DTOEntities
             Comments = new HashSet<CommentDTO>();
             Posts = new HashSet<PostDTO>();
         }
+
+        public bool ShouldSerializeUser()
+        {
+            return Password != null;
+        }
+
     }
 
 

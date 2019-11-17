@@ -4,6 +4,7 @@ using System.Text;
 using AutoMapper;
 using BLL.DTOEntities;
 using BLL.Interfaces;
+using BLL.Mapping;
 using BLL.Options;
 using DAL.Entities;
 using DAL.Interfaces;
@@ -49,12 +50,11 @@ namespace BLL.Service
             return _mapper.Map<User, UserDTO>(user);
         }
 
-        public UserDTO CreateUser(UserDTO userDTO)
+        public UserDTO CreateUser(CreateUserDTO userDTO)
         {
-            var user = _mapper.Map<UserDTO, User>(userDTO);
-
             var pass = PasswordHashService.Hash(userDTO.Password);
 
+            var user = userDTO.ToUser();
             user.Password = pass;
 
             _database.Users.Add(user);
