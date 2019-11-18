@@ -6,11 +6,11 @@ namespace DAL.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IAchievementsRepository Achievements { get; set; }
+        IAchievementsRepository Achievements { get; }
 
-        ICommentRepository Comments { get; set; }
+        ICommentRepository Comments { get; }
 
-        IPostRepository Posts { get; set; }
+        IPostRepository Posts { get; }
 
         IPostTagsRepository PostTags { get; }
 
@@ -21,6 +21,8 @@ namespace DAL.Interfaces
         IUserRepository Users { get; }
 
         IAuthorizedUsersRepository AuthorizedUsers { get; }
+
+        ILikeRepository Likes { get; }
 
         void Save();
     }

@@ -26,5 +26,7 @@ namespace BLL.Interfaces
         IEnumerable<PostDTO> GetPostList(int startFrom, int amount);
 
         IEnumerable<PreviewPostDTO> GetUsersPostById(int userId);
+
+        int SetLike(LikeDTO like);
     }
 }

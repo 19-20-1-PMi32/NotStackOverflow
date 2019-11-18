@@ -65,5 +65,11 @@ namespace Api.Controllers
         {
             return Ok(_postService.GetUsersPostById(userId));
         }
+
+        [HttpGet("like")]
+        public IActionResult GetList(LikeDTO like)
+        {
+            return Ok(_postService.SetLike(like));
+        }
     }
 }

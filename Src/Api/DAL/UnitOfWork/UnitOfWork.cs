@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using DAL.Context;
 using DAL.Interfaces;
@@ -11,11 +12,11 @@ namespace DAL.UnitOfWork
     {
         private readonly ApplicationContext _dbContext;
 
-        public IAchievementsRepository Achievements { get; set; }
+        public IAchievementsRepository Achievements { get; }
 
-        public ICommentRepository Comments { get; set; }
+        public ICommentRepository Comments { get; }
 
-        public IPostRepository Posts { get; set; }
+        public IPostRepository Posts { get; }
 
         public IPostTagsRepository PostTags { get; }
 
@@ -26,6 +27,8 @@ namespace DAL.UnitOfWork
         public IUserRepository Users { get; }
 
         public IAuthorizedUsersRepository AuthorizedUsers { get; }
+
+        public ILikeRepository Likes { get; }
 
         public UnitOfWork(ApplicationContext applicationContext)
         {
@@ -38,6 +41,7 @@ namespace DAL.UnitOfWork
             UserAchievements = new UserAchievementsRepository(applicationContext);
             Users = new UserRepository(applicationContext);
             AuthorizedUsers = new AuthorizedUsersRepository(applicationContext);
+            Likes = new LikeRepository(applicationContext);
         }
 
         public void Save()

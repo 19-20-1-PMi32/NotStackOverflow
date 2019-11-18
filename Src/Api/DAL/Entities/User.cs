@@ -20,13 +20,15 @@ namespace DAL.Entities
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<Post> Posts { get; set; }
-        
+
+        public ICollection<Like> Likes { get; set; }
 
         public User()
         {
             UserAchievements = new HashSet<UserAchievements>();
             Comments = new HashSet<Comment>();
             Posts = new HashSet<Post>();
+            Likes = new HashSet<Like>();
         }
     }
 }

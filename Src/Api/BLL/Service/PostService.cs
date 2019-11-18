@@ -140,5 +140,22 @@ namespace BLL.Service
             return _database.Posts.GetUsersPostsById(userId)
                 .Select(p => p.ToPreviewPostDTO());
         }
+
+        public int SetLike(LikeDTO like)
+        {
+            if (_database.Likes.GetById(like.PostId, like.UserId) != null) return -1;
+
+            var post = _database.Posts.GetById(like.PostId);
+            post.UpVotes++;
+
+            _database.Likes.Add(new Like
+            {
+                PostId = like.PostId,
+                UserId = like.UserId
+            });
+            _database.Save();
+
+            return post.UpVotes;
+        }
     }
 }

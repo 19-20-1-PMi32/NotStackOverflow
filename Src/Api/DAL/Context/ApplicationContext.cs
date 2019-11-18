@@ -19,6 +19,7 @@ namespace DAL.Context
         public DbSet<UserAchievements> UserAchievements { get; set; }
 
         public DbSet<AuthorizedUser> AuthorizedUsers { get; set; }  
+        public DbSet<Like> Likes { get; set; }  
 
         public ApplicationContext()
         {
@@ -35,6 +36,7 @@ namespace DAL.Context
             modelBuilder.ApplyConfiguration(new UserAchievementsConfig());
             modelBuilder.ApplyConfiguration(new UserConfig());
             modelBuilder.ApplyConfiguration(new AuthorizedUserConfig());
+            modelBuilder.ApplyConfiguration(new LikeConfig());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

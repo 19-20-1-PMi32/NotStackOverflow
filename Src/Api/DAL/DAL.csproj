@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190925102339_new table.cs" />
     <Compile Remove="Migrations\20190925102339_new table.Designer.cs" />
+    <Compile Remove="Migrations\20191118180505_AddLikeTable.cs" />
+    <Compile Remove="Migrations\20191118180505_AddLikeTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
