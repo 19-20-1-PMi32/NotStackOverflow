@@ -22,6 +22,9 @@ namespace DAL.Configs
                 .WithMany(u => u.Likes)
                 .HasForeignKey(l => l.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(l => l.IsLiked)
+                .IsRequired();
         }
     }
 }

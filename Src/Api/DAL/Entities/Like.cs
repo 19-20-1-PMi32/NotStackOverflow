@@ -13,5 +13,7 @@ namespace DAL.Entities
         public User User { get; set; }
 
         public int UserId { get; set; }
+
+        public bool IsLiked { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace TestTool
                 var uof = container.Resolve<IUnitOfWork>();
                 var userService = container.Resolve<IUserService>();
                 var postService = container.Resolve<IPostService>();
-                postService.SetLike(new LikeDTO {PostId = 3, UserId = 1});
+                //postService.SetLike(new LikeDTO {PostId = 3, UserId = 1});
                 //userService.CreateUser(new UserDTO()
                 //{
                 //    Name = "Maks",

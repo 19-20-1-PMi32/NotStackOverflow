@@ -11,6 +11,7 @@ namespace DAL.Repositories
 {
     public class PostRepository : Repository<Post>, IPostRepository
     {
+        private const int pageSize = 10;
         public PostRepository(ApplicationContext applicationContext): base(applicationContext)
         { }
 
@@ -24,23 +25,23 @@ namespace DAL.Repositories
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Post> GetPostsWithComments(int postId, int startFrom, int amount)
+        public IEnumerable<Post> GetPostsWithComments(int postId, int page = 1)
         {
             return dbContext.Posts
-                .Skip(startFrom)
-                .Take(amount)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .Where(p => p.PostId == postId)
                 .Include(p => p.Comments)
                 .Include(p => p.User)
                 .ToList();
         }
 
-        public IEnumerable<Post> GetPostList(int startFrom, int amount)
+        public IEnumerable<Post> GetPostList(int page = 1)
         {
             return dbContext.Posts
-                .Skip(startFrom)
-                .Take(amount)
-                .Include(p => p.Comments)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(p => p.User)
                 .ToList();
         }
 

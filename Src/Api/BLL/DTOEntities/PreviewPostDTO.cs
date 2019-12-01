@@ -12,5 +12,6 @@ namespace BLL.DTOEntities
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         public int Viewed { get; set; }
+        public PreviewUserDTO PreviewUserDTO { get; set; }
     }
 }

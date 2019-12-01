@@ -17,7 +17,6 @@ namespace DAL.Context
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PostTags> PostTags { get; set; }
         public DbSet<UserAchievements> UserAchievements { get; set; }
-
         public DbSet<AuthorizedUser> AuthorizedUsers { get; set; }  
         public DbSet<Like> Likes { get; set; }  
 

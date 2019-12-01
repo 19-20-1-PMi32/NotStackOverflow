@@ -57,7 +57,8 @@ namespace BLL.Mapping
                 Text = post.Text,
                 UpVotes = post.UpVotes,
                 DownVotes = post.DownVotes,
-                Viewed = post.Viewed
+                Viewed = post.Viewed,
+                PreviewUserDTO = post.User.ToPreviewUserDTO()
             };
         }
     }

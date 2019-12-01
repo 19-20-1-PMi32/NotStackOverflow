@@ -124,35 +124,44 @@ namespace BLL.Service
             return _database.Posts.GetById(id).ToPostDTO();
         }
 
-        public IEnumerable<PostDTO> GetPostsWithComments(int postId, int startFrom, int amount)
+        public IEnumerable<PostDTO> GetPostsWithComments(int postId, int page)
         {
             //return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostsWithComments(postId, startFrom, amount));
-            return _database.Posts.GetPostsWithComments(postId, startFrom, amount).Select(p => p.ToPostDTO());
+            return _database.Posts.GetPostsWithComments(postId, page).Select(p => p.ToPostDTO());
         }
 
-        public IEnumerable<PostDTO> GetPostList(int startFrom, int amount)
+        public IEnumerable<PreviewPostDTO> GetPostList(int amount)
         {
-            return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostList(startFrom, amount));
+            //return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostList(startFrom, amount));
+            return _database.Posts.GetPostList(amount).Select(p => p.ToPreviewPostDTO());
         }
 
         public IEnumerable<PreviewPostDTO> GetUsersPostById(int userId)
         {
             return _database.Posts.GetUsersPostsById(userId)
-                .Select(p => p.ToPreviewPostDTO());
+                .Select(p => p.ToPreviewPostDTO()).ToList();
         }
 
         public int SetLike(LikeDTO like)
         {
-            if (_database.Likes.GetById(like.PostId, like.UserId) != null) return -1;
-
             var post = _database.Posts.GetById(like.PostId);
-            post.UpVotes++;
-
-            _database.Likes.Add(new Like
+            
+            if (_database.Likes.GetById(like.PostId, like.UserId) != null)
             {
-                PostId = like.PostId,
-                UserId = like.UserId
-            });
+                post.UpVotes--;
+            }
+            else
+            {
+                post.UpVotes++;
+
+                _database.Likes.Add(new Like
+                {
+                    PostId = like.PostId,
+                    UserId = like.UserId,
+                    IsLiked = true
+                });
+            }
+
             _database.Save();
 
             return post.UpVotes;

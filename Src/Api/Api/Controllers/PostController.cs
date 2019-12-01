@@ -48,16 +48,16 @@ namespace Api.Controllers
             return Ok("Deleted");
         }
 
-        [HttpGet("all/{startFrom}/{amount}")]
-        public IActionResult GetAllPosts(int startFrom, int amount)
+        [HttpGet("all/{page}")]
+        public IActionResult GetAllPosts(int page)
         {
-            return Ok(_postService.GetPostList(startFrom, amount));
+            return Ok(_postService.GetPostList(page));
         }
 
-        [HttpGet("issue/{postId}/{startFrom}/{amount}")]
-        public IActionResult GetPostWithComments(int postId, int startFrom, int amount)
+        [HttpGet("issue/{postId}/{page}")]
+        public IActionResult GetPostWithComments(int postId, int page)
         {
-            return Ok(_postService.GetPostsWithComments(postId, startFrom, amount));
+            return Ok(_postService.GetPostsWithComments(postId, page));
         }
 
         [HttpGet("user/{userId}")]

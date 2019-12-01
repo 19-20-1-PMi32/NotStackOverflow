@@ -10,6 +10,7 @@ namespace BLL.Mapping
     {
         public static PreviewUserDTO ToPreviewUserDTO(this User user)
         {
+            if (user == null) return null;
             return new PreviewUserDTO()
             {
                 Id = user.Id,
