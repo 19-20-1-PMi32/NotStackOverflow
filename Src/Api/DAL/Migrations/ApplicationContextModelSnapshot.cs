@@ -15,7 +15,7 @@ namespace DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -257,12 +257,12 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Entities.Achievement", "Achievement")
                         .WithMany("UserAchievements")
                         .HasForeignKey("AchievementId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DAL.Entities.User", "User")
                         .WithMany("UserAchievements")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

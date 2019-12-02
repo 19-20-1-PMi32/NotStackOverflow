@@ -7,7 +7,7 @@ using System.Text;
 
 namespace DAL.Configs
 {
-    class AchievementConfig : IEntityTypeConfiguration<Achievement>
+   public class AchievementConfig : IEntityTypeConfiguration<Achievement>
     {
         public void Configure(EntityTypeBuilder<Achievement> builder)
         {

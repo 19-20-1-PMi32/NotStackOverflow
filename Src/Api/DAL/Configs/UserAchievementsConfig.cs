@@ -15,11 +15,13 @@ namespace DAL.Configs
 
             builder.HasOne(ua => ua.User)
                 .WithMany(u => u.UserAchievements)
-                .HasForeignKey(ua => ua.UserId);
+                .HasForeignKey(ua => ua.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(ua => ua.Achievement)
                 .WithMany(a => a.UserAchievements)
-                .HasForeignKey(ua => ua.AchievementId);
+                .HasForeignKey(ua => ua.AchievementId)
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

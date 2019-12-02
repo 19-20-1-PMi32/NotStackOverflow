@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DAL.Configs
 {
-    class AuthorizedUserConfig : IEntityTypeConfiguration<AuthorizedUser>
+    public class AuthorizedUserConfig : IEntityTypeConfiguration<AuthorizedUser>
     {
         public void Configure(EntityTypeBuilder<AuthorizedUser> builder)
         {

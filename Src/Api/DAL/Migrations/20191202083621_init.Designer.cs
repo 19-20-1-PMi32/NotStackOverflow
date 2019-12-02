@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20191016172250_fixTable")]
-    partial class fixTable
+    [Migration("20191202083621_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -37,12 +37,15 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.AuthorizedUser", b =>
                 {
-                    b.Property<string>("Email")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email");
 
                     b.Property<string>("RefreshToken");
 
-                    b.HasKey("Email");
+                    b.HasKey("Id");
 
                     b.HasIndex("RefreshToken")
                         .IsUnique()
@@ -66,7 +69,7 @@ namespace DAL.Migrations
                     b.Property<string>("Text")
                         .IsRequired();
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -75,6 +78,21 @@ namespace DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Like", b =>
+                {
+                    b.Property<int>("PostId");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<bool>("IsLiked");
+
+                    b.HasKey("PostId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("DAL.Entities.Post", b =>
@@ -93,6 +111,8 @@ namespace DAL.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired();
+
+                    b.Property<string>("Title");
 
                     b.Property<int>("UpVotes");
 
@@ -200,6 +220,19 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            modelBuilder.Entity("DAL.Entities.Like", b =>
+                {
+                    b.HasOne("DAL.Entities.Post", "Post")
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DAL.Entities.User", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("DAL.Entities.Post", b =>
                 {
                     b.HasOne("DAL.Entities.User", "User")
@@ -226,12 +259,12 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Entities.Achievement", "Achievement")
                         .WithMany("UserAchievements")
                         .HasForeignKey("AchievementId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DAL.Entities.User", "User")
                         .WithMany("UserAchievements")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
