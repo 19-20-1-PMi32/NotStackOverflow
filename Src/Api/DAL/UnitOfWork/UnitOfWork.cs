@@ -28,7 +28,7 @@ namespace DAL.UnitOfWork
 
         public IAuthorizedUsersRepository AuthorizedUsers { get; }
 
-        public ILikeRepository Likes { get; }
+        public IVoteRepository Votes { get; }
 
         public UnitOfWork(ApplicationContext applicationContext)
         {
@@ -41,7 +41,7 @@ namespace DAL.UnitOfWork
             UserAchievements = new UserAchievementsRepository(applicationContext);
             Users = new UserRepository(applicationContext);
             AuthorizedUsers = new AuthorizedUsersRepository(applicationContext);
-            Likes = new LikeRepository(applicationContext);
+            Votes = new VoteRepository(applicationContext);
         }
 
         public void Save()

@@ -142,29 +142,67 @@ namespace BLL.Service
                 .Select(p => p.ToPreviewPostDTO()).ToList();
         }
 
-        public int SetLike(LikeDTO like)
+        public int SetLike(VoteDTO voteDto)
         {
-            var post = _database.Posts.GetById(like.PostId);
-            
-            if (_database.Likes.GetById(like.PostId, like.UserId) != null)
+            var post = _database.Posts.GetById(voteDto.PostId);
+            var like = _database.Votes.GetById(voteDto.PostId, voteDto.UserId);
+            if (like == null)
             {
-                post.UpVotes--;
+                ++post.UpVotes;
+
+                _database.Votes.Add(new Vote
+                {
+                    PostId = voteDto.PostId,
+                    UserId = voteDto.UserId,
+                    IsLiked = true
+                });
+            }
+            else if(!like.IsLiked)
+            {
+                ++post.UpVotes;
+                --post.DownVotes;
+                like.IsLiked = true;
             }
             else
             {
-                post.UpVotes++;
-
-                _database.Likes.Add(new Like
-                {
-                    PostId = like.PostId,
-                    UserId = like.UserId,
-                    IsLiked = true
-                });
+                --post.UpVotes;
+                _database.Votes.Remove(like);
             }
 
             _database.Save();
 
             return post.UpVotes;
         }
+
+        public int SetDislike(VoteDTO voteDto)
+        {
+            var post = _database.Posts.GetById(voteDto.PostId);
+            var dislike = _database.Votes.GetById(voteDto.PostId, voteDto.UserId);
+            if (dislike == null)
+            {
+                ++post.DownVotes;
+                _database.Votes.Add(new Vote
+                {
+                    PostId = voteDto.PostId,
+                    UserId = voteDto.UserId,
+                    IsLiked = true
+                });
+            }
+            else if (dislike.IsLiked)
+            {
+                --post.UpVotes;
+                ++post.DownVotes;
+                dislike.IsLiked = false;
+            }
+            else
+            {
+                --post.UpVotes;
+                _database.Votes.Remove(dislike);
+            }
+            _database.Save();
+
+            return post.DownVotes;
+        }
+
     }
 }

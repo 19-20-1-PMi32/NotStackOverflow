@@ -78,21 +78,6 @@ namespace DAL.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("DAL.Entities.Like", b =>
-                {
-                    b.Property<int>("PostId");
-
-                    b.Property<int>("UserId");
-
-                    b.Property<bool>("IsLiked");
-
-                    b.HasKey("PostId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Likes");
-                });
-
             modelBuilder.Entity("DAL.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -205,6 +190,21 @@ namespace DAL.Migrations
                     b.ToTable("UserAchievements");
                 });
 
+            modelBuilder.Entity("DAL.Entities.Vote", b =>
+                {
+                    b.Property<int>("PostId");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<bool>("IsLiked");
+
+                    b.HasKey("PostId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Votes");
+                });
+
             modelBuilder.Entity("DAL.Entities.Comment", b =>
                 {
                     b.HasOne("DAL.Entities.Post", "Post")
@@ -214,19 +214,6 @@ namespace DAL.Migrations
 
                     b.HasOne("DAL.Entities.User", "User")
                         .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("DAL.Entities.Like", b =>
-                {
-                    b.HasOne("DAL.Entities.Post", "Post")
-                        .WithMany("Likes")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DAL.Entities.User", "User")
-                        .WithMany("Likes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -261,6 +248,19 @@ namespace DAL.Migrations
 
                     b.HasOne("DAL.Entities.User", "User")
                         .WithMany("UserAchievements")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("DAL.Entities.Vote", b =>
+                {
+                    b.HasOne("DAL.Entities.Post", "Post")
+                        .WithMany("Likes")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DAL.Entities.User", "User")
+                        .WithMany("Likes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });

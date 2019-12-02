@@ -18,7 +18,7 @@ namespace DAL.Context
         public DbSet<PostTags> PostTags { get; set; }
         public DbSet<UserAchievements> UserAchievements { get; set; }
         public DbSet<AuthorizedUser> AuthorizedUsers { get; set; }  
-        public DbSet<Like> Likes { get; set; }  
+        public DbSet<Vote> Votes { get; set; }  
 
         public ApplicationContext()
         {
@@ -35,7 +35,7 @@ namespace DAL.Context
             modelBuilder.ApplyConfiguration(new UserAchievementsConfig());
             modelBuilder.ApplyConfiguration(new UserConfig());
             modelBuilder.ApplyConfiguration(new AuthorizedUserConfig());
-            modelBuilder.ApplyConfiguration(new LikeConfig());
+            modelBuilder.ApplyConfiguration(new VoteConfig());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

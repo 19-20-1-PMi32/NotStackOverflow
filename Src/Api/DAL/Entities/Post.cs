@@ -18,7 +18,7 @@ namespace DAL.Entities
 
         public ICollection<PostTags> PostTags { get; set; }
         public ICollection<Comment> Comments { get; set; }
-        public ICollection<Like> Likes { get; set; }
+        public ICollection<Vote> Likes { get; set; }
 
         public int UserId { get; set; }
         public User User { get; set; }
@@ -27,7 +27,7 @@ namespace DAL.Entities
         {
             PostTags = new HashSet<PostTags>();
             Comments = new HashSet<Comment>();
-            Likes = new HashSet<Like>();
+            Likes = new HashSet<Vote>();
         }
     }
 }

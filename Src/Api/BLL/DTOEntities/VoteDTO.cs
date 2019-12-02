@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BLL.DTOEntities
 {
-    public class LikeDTO
+    public class VoteDTO
     {
         public int PostId { get; set; }
         public int UserId { get; set; }

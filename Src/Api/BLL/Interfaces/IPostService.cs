@@ -27,6 +27,8 @@ namespace BLL.Interfaces
 
         IEnumerable<PreviewPostDTO> GetUsersPostById(int userId);
 
-        int SetLike(LikeDTO like);
+        int SetLike(VoteDTO voteDto);
+
+        int SetDislike(VoteDTO voteDto);
     }
 }

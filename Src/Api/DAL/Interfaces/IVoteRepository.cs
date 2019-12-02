@@ -5,8 +5,8 @@ using DAL.Entities;
 
 namespace DAL.Interfaces
 {
-    public interface ILikeRepository: IRepository<Like>
+    public interface IVoteRepository: IRepository<Vote>
     {
-        Like GetById(int postId, int userId);
+        Vote GetById(int postId, int userId);
     }
 }

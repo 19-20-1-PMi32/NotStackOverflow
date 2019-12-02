@@ -22,7 +22,7 @@ namespace DAL.Interfaces
 
         IAuthorizedUsersRepository AuthorizedUsers { get; }
 
-        ILikeRepository Likes { get; }
+        IVoteRepository Votes { get; }
 
         void Save();
     }

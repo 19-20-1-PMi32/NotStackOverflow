@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DAL.Configs
 {
-    public class LikeConfig : IEntityTypeConfiguration<Like>
+    public class VoteConfig : IEntityTypeConfiguration<Vote>
     {
-        public void Configure(EntityTypeBuilder<Like> builder)
+        public void Configure(EntityTypeBuilder<Vote> builder)
         {
             builder.HasKey(l => new {l.PostId, l.UserId});
 
