@@ -55,10 +55,8 @@ namespace BLL.Service
             var pass = PasswordHashService.Hash(userDTO.Password);
 
             var user = userDTO.ToUser();
-            if (string.IsNullOrWhiteSpace(userDTO.Role))
-            {
-                user.Role = "User";
-            }
+            
+            user.Role = "User";
             user.Password = pass;
 
             _database.Users.Add(user);
@@ -92,5 +90,11 @@ namespace BLL.Service
             return _mapper.Map<IEnumerable<User>, ICollection<UserDTO>>(_database.Users.GetAll());
         }
 
+        public void SetAdmin(int id)
+        {
+            var user = _database.Users.GetById(id);
+            user.Role = "Admin";
+            _database.Save();
+        }
     }
 }

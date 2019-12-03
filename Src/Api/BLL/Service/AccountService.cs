@@ -133,9 +133,9 @@ namespace BLL.Service
         {
             var user = _database.Users.GetUserByEmail(username);
 
-            var userHashPass = PasswordHashService.Hash(password);
+            //var userHashPass = PasswordHashService.Hash(password);
 
-            if (!PasswordHashService.Check(userHashPass, user.Password).Verified)
+            if (!PasswordHashService.Check(user.Password, password).Verified)
             {
                 throw new SecurityException("Invalid email or password");
             }

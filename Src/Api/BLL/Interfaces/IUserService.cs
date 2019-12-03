@@ -19,5 +19,7 @@ namespace BLL.Interfaces
 
         IEnumerable<UserDTO> GetAll();
 
+        void SetAdmin(int id);
+
     }
 }

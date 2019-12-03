@@ -28,8 +28,5 @@ namespace BLL.DTOEntities
 
         public string Job { get; set; }
 
-        [Required]
-        public string Role { get; set; }
-
     }
 }

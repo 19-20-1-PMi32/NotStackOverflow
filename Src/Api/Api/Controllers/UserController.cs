@@ -1,5 +1,6 @@
 ﻿using BLL.DTOEntities;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -18,13 +19,21 @@ namespace Api.Controllers
         [HttpPost("register")]
         public IActionResult Register(CreateUserDTO userDTO)
         {
-            return Ok(_userService.CreateUser(userDTO));
+            _userService.CreateUser(userDTO);
+            return Ok();
         }
 
         [HttpGet]
         public IActionResult GetAllUsers()
         {
             return Ok(_userService.GetAll());
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admin")]
+        public IActionResult SetAdmin()
+        {
+            return Ok();
         }
     }
 }

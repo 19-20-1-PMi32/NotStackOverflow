@@ -12,7 +12,7 @@ namespace BLL.Service
     public sealed class PasswordHashService 
     {
         private const int SaltSize = 16;
-        private const int KeySize = 32; 
+        private const int KeySize = 32;
 
         //public PasswordHashService(IOptions<HashOptions> options)
         //{
@@ -28,7 +28,7 @@ namespace BLL.Service
                 password,
                 SaltSize,
                 10000,
-                HashAlgorithmName.SHA512))
+                HashAlgorithmName.SHA256))
             {
                 var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
                 var salt = Convert.ToBase64String(algorithm.Salt);
@@ -57,7 +57,7 @@ namespace BLL.Service
                 password,
                 salt,
                 iterations,
-                HashAlgorithmName.SHA512))
+                HashAlgorithmName.SHA256))
             {
                 var keyToCheck = algorithm.GetBytes(KeySize);
 

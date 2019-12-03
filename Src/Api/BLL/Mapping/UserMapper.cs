@@ -29,8 +29,7 @@ namespace BLL.Mapping
                 Surname = createUserDTO.Surname,
                 Password = createUserDTO.Password,
                 Email = createUserDTO.Email,
-                Job = createUserDTO.Job,
-                Role = createUserDTO.Role
+                Job = createUserDTO.Job
             };
         }
     }
