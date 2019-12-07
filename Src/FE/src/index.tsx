@@ -12,13 +12,17 @@ import * as serviceWorker from './serviceWorker';
 
 import Root from './containers/Root';
 
+const MainRoot = () => (
+  <Route to={'/'} component={Root} />
+)
+
 ReactDOM.render(
   (
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <Root />
+        <MainRoot />
       </ThemeProvider>
     </ConnectedRouter>
   </Provider>

@@ -21,3 +21,5 @@ const store = createStore(
 );
 
 export default store;
+
+export * from './types';

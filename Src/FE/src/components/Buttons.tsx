@@ -51,3 +51,23 @@ export const TextButton = styled.button`
     cursor: default;
   }
 `;
+
+export const WarningButton = styled.button`
+${sharedStyle}
+
+height: 38px;
+padding: 8px 15px;
+text-align: center;
+border-radius: 5px;
+background-color: ${({ theme }) => theme.color.orange};
+color: ${({ theme }) => theme.color.white};
+
+&:hover {
+  background-color: ${({ theme }) => theme.color.darkOrange};
+}
+
+&:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+`;

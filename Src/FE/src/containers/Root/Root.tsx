@@ -7,6 +7,8 @@ import { RouteConsts } from 'consts';
 
 import LoginContainer from '../Login';
 import SignUpContainer from '../SignUp';
+import DashboardContainer from '../Dashboard';
+import AskQuestionContainer from '../AskQuestion';
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -27,6 +29,16 @@ const Root = () => {
           exact={true}
           path={RouteConsts.SignUp}
           component={SignUpContainer}
+        />
+        <Route
+          exact={true}
+          path={RouteConsts.Dashboard}
+          component={DashboardContainer}
+        />
+        <Route
+          exact={true}
+          path={RouteConsts.AskQuestion}
+          component={AskQuestionContainer}
         />
       </Switch>
     </Wrapper>
