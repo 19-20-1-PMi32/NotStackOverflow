@@ -40,7 +40,8 @@ namespace DAL.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=application-db;Trusted_Connection=True;");
+            optionsBuilder.UseNpgsql(
+                "Host=localhost;Port=5433;Database=notstack;Username=postgres;Password=password");
         }
 
 
