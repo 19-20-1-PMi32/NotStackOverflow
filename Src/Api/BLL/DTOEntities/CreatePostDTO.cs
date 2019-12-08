@@ -7,6 +7,7 @@ namespace BLL.DTOEntities
 {
     public class CreatePostDTO
     {
+        [Required]
         public int PostId { get; set; }
         public int PostNum { get; set; }
         public int UpVotes { get; set; }

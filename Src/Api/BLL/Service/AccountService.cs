@@ -31,10 +31,13 @@ namespace BLL.Service
             _database.AuthorizedUsers.Add(authorizedUser);
             _database.Save();
 
-            var accessToken = GetAccessToken(authorizedUser.Id,username, password);
+            int userId;
+            
+            var accessToken = GetAccessToken(authorizedUser.Id,username, password, out userId);
 
             var response = new
             {
+                Id = userId,
                 access_token = accessToken,
                 refresh_token = refreshToken
             };
@@ -55,7 +58,7 @@ namespace BLL.Service
 
             if (email == null || role == null || tokenId == null)
             {
-                throw new Exception("Bad Claims");
+                throw new System.Exception("Bad Claims");
             }
 
             var authorizedUser = _database.AuthorizedUsers.GetById(Convert.ToInt32(tokenId.Value)); //retrieve the refresh token from a data store
@@ -129,10 +132,12 @@ namespace BLL.Service
             return encodedJwt;
         }
 
-        private string GetAccessToken(int tokenId, string username, string password)
+        private string GetAccessToken(int tokenId, string username, string password, out int userId)
         {
             var user = _database.Users.GetUserByEmail(username);
 
+            userId = user.Id;
+            
             //var userHashPass = PasswordHashService.Hash(password);
 
             if (!PasswordHashService.Check(user.Password, password).Verified)

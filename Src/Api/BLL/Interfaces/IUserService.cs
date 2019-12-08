@@ -7,13 +7,13 @@ namespace BLL.Interfaces
 {
     public interface IUserService
     {
-        UserDTO GetUserById(int id);
+        UpdateUserDto GetUserById(int id);
         
         UserDTO GetUserByEmailAndPass(string email, string password);
 
         UserDTO CreateUser(CreateUserDTO user);
 
-        UserDTO UpdateUser(UserDTO user);
+        void UpdateUser(UpdateUserDto user);
 
         void RemoveUser(int id);
 
