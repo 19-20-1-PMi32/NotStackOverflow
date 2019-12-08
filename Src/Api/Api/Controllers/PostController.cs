@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Filters;
 using BLL.DTOEntities;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,7 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ExceptionFilter]
     public class PostController : ControllerBase
     {
         private readonly IPostService _postService;

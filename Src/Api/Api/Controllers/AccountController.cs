@@ -12,11 +12,13 @@ using BLL.DTOEntities;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json.Linq;
+using Api.Filters;
 
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ExceptionFilter]
     public class AccountController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -27,8 +29,6 @@ namespace Api.Controllers
             _userService = userService;
             _accountService = accountService;
         }
-
-      
 
         [HttpPost("token")]
         public async Task Token()
