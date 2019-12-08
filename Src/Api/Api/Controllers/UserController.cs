@@ -23,6 +23,12 @@ namespace Api.Controllers
             return Ok();
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            return Ok(_userService.GetUserById(id));
+        }
+        
         [HttpGet]
         public IActionResult GetAllUsers()
         {
