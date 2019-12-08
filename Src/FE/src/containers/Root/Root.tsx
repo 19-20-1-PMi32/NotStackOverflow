@@ -9,6 +9,7 @@ import LoginContainer from '../Login';
 import SignUpContainer from '../SignUp';
 import DashboardContainer from '../Dashboard';
 import AskQuestionContainer from '../AskQuestion';
+import ProfileContainer from '../Profile';
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -39,6 +40,11 @@ const Root = () => {
           exact={true}
           path={RouteConsts.AskQuestion}
           component={AskQuestionContainer}
+        />
+        <Route
+          exact={true}
+          path={RouteConsts.Profile}
+          component={ProfileContainer}
         />
       </Switch>
     </Wrapper>
