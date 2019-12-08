@@ -55,7 +55,7 @@ namespace BLL.Service
 
             if (email == null || role == null || tokenId == null)
             {
-                throw new Exception("Bad Claims");
+                throw new System.Exception("Bad Claims");
             }
 
             var authorizedUser = _database.AuthorizedUsers.GetById(Convert.ToInt32(tokenId.Value)); //retrieve the refresh token from a data store
