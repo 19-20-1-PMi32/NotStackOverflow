@@ -28,7 +28,14 @@ namespace Api.Controllers
         {
             return Ok(_userService.GetUserById(id));
         }
-        
+
+        [HttpPut("update")]
+        public IActionResult Update(UpdateUserDto userDto)
+        {
+            _userService.UpdateUser(userDto);
+            return Ok();
+        }
+
         [HttpGet]
         public IActionResult GetAllUsers()
         {

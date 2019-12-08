@@ -13,7 +13,7 @@ namespace BLL.Interfaces
 
         UserDTO CreateUser(CreateUserDTO user);
 
-        UserDTO UpdateUser(UserDTO user);
+        void UpdateUser(UpdateUserDto user);
 
         void RemoveUser(int id);
 

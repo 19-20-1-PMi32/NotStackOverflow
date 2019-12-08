@@ -66,14 +66,19 @@ namespace BLL.Service
             //return userDTO;
         }
 
-        public UserDTO UpdateUser(UserDTO userDTO)
+        public void UpdateUser(UpdateUserDto userDTO)
         {
-            var user = _mapper.Map<UserDTO, User>(userDTO);
+            //var user = _mapper.Map<UserDTO, User>(userDTO);
+            var user = _database.Users.GetById(userDTO.Id);
 
+            user.Name = userDTO.Name;
+            user.Surname = userDTO.Surname;
+            user.NickName = userDTO.NickName;
+            user.Email = userDTO.Email;
+            user.Job = userDTO.Job;
+            
             _database.Users.Update(user);
             _database.Save();
-
-            return _mapper.Map<User, UserDTO>(user);
         }
 
         public void RemoveUser(int id)
