@@ -37,7 +37,7 @@ namespace BLL.Service
         {
             var user = _database.Users.GetById(id);
 
-            return user.toUpdateUser();
+            return user.ToUser();
         }
 
         public UserDTO GetUserByEmailAndPass(string email, string password)
