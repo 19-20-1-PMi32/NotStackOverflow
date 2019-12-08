@@ -33,12 +33,11 @@ namespace BLL.Service
             var hspass = new PasswordHashService();
         }
 
-        public UserDTO GetUserById(int id)
+        public UpdateUserDto GetUserById(int id)
         {
-            
             var user = _database.Users.GetById(id);
 
-            return _mapper.Map<User, UserDTO>(user);
+            return user.toUpdateUser();
         }
 
         public UserDTO GetUserByEmailAndPass(string email, string password)

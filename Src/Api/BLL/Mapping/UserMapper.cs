@@ -32,5 +32,18 @@ namespace BLL.Mapping
                 Job = createUserDTO.Job
             };
         }
+
+        public static UpdateUserDto toUpdateUser(this User user)
+        {
+            return new UpdateUserDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Surname = user.Surname,
+                NickName = user.NickName,
+                Email = user.Email,
+                Job = user.Job
+            };
+        }
     }
 }
