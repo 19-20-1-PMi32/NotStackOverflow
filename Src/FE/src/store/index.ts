@@ -22,4 +22,5 @@ const store = createStore(
 
 export default store;
 
+export * from './domains';
 export * from './types';

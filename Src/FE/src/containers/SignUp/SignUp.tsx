@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import { InputField, Button, H2 } from 'components';
 import { styled } from 'theme';
 import { validationUtil } from 'utils';
+import { HandleSignupAction } from 'store/domains';
 
 const Wrapper = styled.div`
   max-width: 450px;
@@ -27,7 +28,11 @@ const Wrapper = styled.div`
   }
 `;
 
-const SignUpForm = () => {
+interface ISignupFrom {
+  handleSignupAction: HandleSignupAction;
+}
+
+const SignUpForm: React.FC<ISignupFrom> = ({ handleSignupAction }) => {
   return (
     <Wrapper>
       <H2 className="title">Sign up to NotStackOverflow</H2>
@@ -40,7 +45,10 @@ const SignUpForm = () => {
           password: '',
           confirmPassword: ''
         }}
-        onSubmit={() => undefined}
+        onSubmit={(values) => {
+          console.log(values)
+          handleSignupAction(values);
+        }}
       >{({ isValid }) => (
         <Form>
           <Field
