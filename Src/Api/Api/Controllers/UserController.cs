@@ -38,7 +38,7 @@ namespace Api.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public IActionResult GetAllUsers()
         {
             return Ok(_userService.GetAll());
