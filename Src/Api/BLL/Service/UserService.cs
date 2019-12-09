@@ -37,7 +37,7 @@ namespace BLL.Service
         {
             var user = _database.Users.GetById(id);
 
-            return user.ToUser();
+            return user.ToUpdateUser();
         }
 
         public UserDTO GetUserByEmailAndPass(string email, string password)
@@ -53,7 +53,7 @@ namespace BLL.Service
         {
             var pass = PasswordHashService.Hash(userDTO.Password);
 
-            var user = userDTO.ToUser();
+            var user = userDTO.ToUpdateUser();
             
             user.Role = "User";
             user.Password = pass;

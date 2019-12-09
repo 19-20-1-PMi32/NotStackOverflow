@@ -55,6 +55,7 @@ namespace BLL.Service
             var email =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Email);
             var role =  principal.Claims.FirstOrDefault(user => user.Type == ClaimTypes.Role);
             var tokenId = principal.Claims.FirstOrDefault(user => user.Type == "tokenId");
+            var userId = principal.Claims.FirstOrDefault(user => user.Type == "Id");
 
             if (email == null || role == null || tokenId == null)
             {
@@ -65,7 +66,8 @@ namespace BLL.Service
             if (authorizedUser.RefreshToken != refreshToken)
                 throw new SecurityTokenException("Invalid refresh token");
 
-            var newAccessToken = GenerateToken(GetIdentity(principal.Identity.Name, email.Value, role.Value, 1));
+            var newAccessToken = GenerateToken(GetIdentity(principal.Identity.Name, email.Value, role.Value,
+                Convert.ToInt32(tokenId.Value), Convert.ToInt32(userId)));
             var newRefreshToken = GenerateRefreshToken();
 
             authorizedUser.RefreshToken = newRefreshToken;
@@ -85,14 +87,15 @@ namespace BLL.Service
             });
         }
 
-        private ClaimsIdentity GetIdentity(string name, string email, string role, int tokenId)
+        private ClaimsIdentity GetIdentity(string name, string email, string role, int tokenId, int userId)
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, name),
                 new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, role),
-                new Claim("tokenId", tokenId.ToString())
+                new Claim("tokenId", tokenId.ToString()),
+                new Claim("Id", userId.ToString())
             };
             var claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
@@ -145,7 +148,7 @@ namespace BLL.Service
                 throw new SecurityException("Invalid email or password");
             }
 
-            var identity = GetIdentity(user.Name, user.Email, user.Role, tokenId);
+            var identity = GetIdentity(user.Name, user.Email, user.Role, tokenId, userId);
 
             return identity == null ?
                 "Invalid username or password." :

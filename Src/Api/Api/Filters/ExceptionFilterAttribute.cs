@@ -19,40 +19,39 @@ namespace Api.Filters
 
             var exception = context.Exception;
 
-            if (exception is NotFoundException)
+            switch (exception)
             {
-                // Add logging here
-                // In method {actionName} exception occurred: \n {exceptionMessage} \n {exceptionStack}
+                case NotFoundException _:
+                    // Add logging here
+                    // In method {actionName} exception occurred: \n {exceptionMessage} \n {exceptionStack}
 
-                context.Result = new ContentResult
-                {
-                    Content = $"Requested Id not found in database.",
-                    StatusCode = (int)HttpStatusCode.BadRequest
-                };
-            }
-            else if (exception is DataBaseException)
-            {
-                context.Result = new ContentResult
-                {
-                    Content = $"Database error",
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
-            }
-            else if (exception is InternalException)
-            {
-                context.Result = new ContentResult
-                {
-                    Content = $"Internal exception occured",
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
-            }
-            else
-            {
-                context.Result = new ContentResult
-                {
-                    Content = $"Unhandled exception occurred",
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
+                    context.Result = new ContentResult
+                    {
+                        Content = $"Requested Id not found in database.",
+                        StatusCode = (int)HttpStatusCode.BadRequest
+                    };
+                    break;
+                case DataBaseException _:
+                    context.Result = new ContentResult
+                    {
+                        Content = $"Database error",
+                        StatusCode = (int)HttpStatusCode.InternalServerError
+                    };
+                    break;
+                case InternalException _:
+                    context.Result = new ContentResult
+                    {
+                        Content = $"Internal exception occured",
+                        StatusCode = (int)HttpStatusCode.InternalServerError
+                    };
+                    break;
+                default:
+                    context.Result = new ContentResult
+                    {
+                        Content = $"Unhandled exception occurred",
+                        StatusCode = (int)HttpStatusCode.InternalServerError
+                    };
+                    break;
             }
 
             context.ExceptionHandled = true;
