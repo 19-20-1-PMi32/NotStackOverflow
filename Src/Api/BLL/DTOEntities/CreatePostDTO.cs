@@ -9,11 +9,13 @@ namespace BLL.DTOEntities
     {
         
         public int PostId { get; set; }
+        [Required]
         public int PostNum { get; set; }
         public int UpVotes { get; set; }
         public int DownVotes { get; set; }
         [Required]
         public string Text { get; set; }
+        [Required]
         public string Title { get; set; }
         public int Viewed { get; set; }
         [Required]
@@ -21,6 +23,7 @@ namespace BLL.DTOEntities
 
         public ICollection<int> Tags { get; set; }
 
+        [Required]
         public int UserId { get; set; }
         public CreatePostDTO()
         {
