@@ -23,8 +23,7 @@ namespace BLL.Service
             }).CreateMapper();
 
         }
-
-
+        
         public CommentDTO CreateComment(CommentDTO commentDTO)
         {
             var comment = _mapper.Map<CommentDTO, Comment>(commentDTO);
