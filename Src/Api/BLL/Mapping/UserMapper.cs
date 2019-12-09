@@ -20,7 +20,7 @@ namespace BLL.Mapping
             };
         }
 
-        public static User ToUser(this CreateUserDTO createUserDTO)
+        public static User ToUpdateUser(this CreateUserDTO createUserDTO)
         {
             return new User
             {
@@ -33,7 +33,7 @@ namespace BLL.Mapping
             };
         }
 
-        public static UpdateUserDto ToUser(this User user)
+        public static UpdateUserDto ToUpdateUser(this User user)
         {
             return new UpdateUserDto
             {
