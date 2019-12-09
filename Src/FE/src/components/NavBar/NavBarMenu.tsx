@@ -5,6 +5,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { H2, Button, TextButton, InputField } from 'components';
 import { styled } from 'theme';
 import { RouteConsts } from 'consts';
+import { IUserDataSelect } from 'store/domains';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -58,36 +59,53 @@ const Wrapper = styled.div`
   }
 `;
 
-export const NavBarMenu = () => {
+interface INavBarMenu {
+  userData: IUserDataSelect;
+}
+
+export const NavBarMenu: React.FC<INavBarMenu> = ({ userData }) => {
   return (
     <Wrapper>
       <div className="left-side">
         <NavLink to="/">
           <H2 className="title">NotStackOverflow</H2>
         </NavLink>
-          <Formik
-            initialValues={{
-              search: ''
-            }}
-            onSubmit={() => undefined}
-          >{() => (
-            <Form>
-              <Field
-                component={InputField}
-                name="name"
-                placeholder="Search..."
-              />
-            </Form>
-          )}
-          </Formik>
+        <Formik
+          initialValues={{
+            search: ''
+          }}
+          onSubmit={() => undefined}
+        >{() => (
+          <Form>
+            <Field
+              component={InputField}
+              name="name"
+              placeholder="Search..."
+            />
+          </Form>
+        )}
+        </Formik>
       </div>
       <div className="right-side">
-        <Link to={RouteConsts.Login}>
-          <TextButton className="text-button">Log in</TextButton>
-        </Link>
-        <Link to={RouteConsts.SignUp}>
-          <Button>Sign up</Button>
-        </Link>
+        {userData.id ? (
+          <>
+            <Link to={`/user/${userData.id}`}>
+              <Button className="text-button">Profile</Button>
+            </Link>
+            <Link to={RouteConsts.Dashboard}>
+              <TextButton>Logout</TextButton>
+            </Link>
+          </>
+        ) : (
+            <>
+              <Link to={RouteConsts.Login}>
+                <TextButton className="text-button">Log in</TextButton>
+              </Link>
+              <Link to={RouteConsts.SignUp}>
+                <Button>Sign up</Button>
+              </Link>
+            </>
+          )}
       </div>
     </Wrapper>
   );

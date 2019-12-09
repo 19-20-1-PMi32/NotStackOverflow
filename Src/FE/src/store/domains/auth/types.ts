@@ -9,6 +9,15 @@ export interface ISignupData {
 }
 
 export interface IAuthInitialState {
+  id: number;
+  token: string;
+  refreshToken: string;
+}
+
+export interface ILoginResponse {
+  Id: string;
+  access_token: string;
+  refresh_token: string;
 }
 
 export interface IAuthState extends ImmutableObject<IAuthInitialState> {}

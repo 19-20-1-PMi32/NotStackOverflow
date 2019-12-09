@@ -1,9 +1,12 @@
 import { ConnectedRouter } from 'connected-react-router';
 
-// import {
-
-// } from './domains';
+import {
+  IAuthState,
+  IUserState
+} from './domains';
 
 export interface IStoreState {
   router: ConnectedRouter;
+  auth: IAuthState;
+  user: IUserState;
 }

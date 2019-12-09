@@ -1,6 +1,6 @@
 import { IPromiseAction } from 'types';
 
-import {} from './types';
+import { ILoginResponse } from './types';
 
 export enum AuthActionTypeKeys {
   SIGNUP = 'auth/SIGNUP',
@@ -10,10 +10,6 @@ export enum AuthActionTypeKeys {
   LOGIN = 'auth/LOGIN',
   LOGIN_FULFILLED = 'auth/LOGIN_FULFILLED',
   LOGIN_REJECTED = 'auth/LOGIN_REJECTED',
-
-  GET_USER_DATA = 'auth/GET_USER_DATA',
-  GET_USER_DATA_FULFILLED = 'auth/GET_USER_DATA_FULFILLED',
-  GET_USER_DATA_REJECTED = 'auth/GET_USER_DATA_REJECTED',
 
   LOG_OUT = 'auth/LOG_OUT'
 }
@@ -25,16 +21,10 @@ export interface ISignupFulfilledActionType
   extends IPromiseAction<AuthActionTypeKeys.SIGNUP_FULFILLED, {}> {}
 
 export interface ILoginActionType
-  extends IPromiseAction<AuthActionTypeKeys.LOGIN, Promise<{}>> {}
+  extends IPromiseAction<AuthActionTypeKeys.LOGIN, Promise<ILoginResponse>> {}
 
 export interface ILoginFulfilledActionType
-  extends IPromiseAction<AuthActionTypeKeys.LOGIN_FULFILLED, {}> {}
-
-export interface IGetUserDataActionType
-  extends IPromiseAction<AuthActionTypeKeys.GET_USER_DATA, Promise<{}>> {}
-
-export interface IGetUserDataFulfilledActionType
-  extends IPromiseAction<AuthActionTypeKeys.GET_USER_DATA_FULFILLED, {}> {}
+  extends IPromiseAction<AuthActionTypeKeys.LOGIN_FULFILLED, ILoginResponse> {}
 
 export interface ILogOutActionType
   extends IPromiseAction<AuthActionTypeKeys.LOG_OUT, {}> {}
@@ -44,6 +34,4 @@ export type IAuthActionTypes =
   | ISignupFulfilledActionType
   | ILoginActionType
   | ILoginFulfilledActionType
-  | IGetUserDataActionType
-  | IGetUserDataFulfilledActionType
   | ILogOutActionType;

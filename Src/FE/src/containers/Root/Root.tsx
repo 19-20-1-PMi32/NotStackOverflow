@@ -10,16 +10,27 @@ import SignUpContainer from '../SignUp';
 import DashboardContainer from '../Dashboard';
 import AskQuestionContainer from '../AskQuestion';
 import ProfileContainer from '../Profile';
+import { IUserDataSelect, HandleInitAction } from 'store/domains';
 
 const Wrapper = styled.div`
   min-height: 100vh;
   width: 100%;
 `;
 
-const Root = () => {
+interface IRoot {
+  userData: IUserDataSelect;
+  handleInitAction: HandleInitAction;
+}
+
+const Root: React.FC<IRoot> = ({ userData, handleInitAction }) => {
+  
+  React.useEffect(() => {
+    handleInitAction()
+  }, [])
+
   return (
     <Wrapper>
-      <NavBarMenu />
+      <NavBarMenu userData={userData}/>
       <Switch>
         <Route
           exact={true}

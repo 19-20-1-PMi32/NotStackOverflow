@@ -7,14 +7,15 @@ import {
   AuthActionTypeKeys,
   ISignupActionType,
   ILoginActionType,
-  IGetUserDataActionType,
   ILogOutActionType
 } from './actionTypes';
 import * as api from './api';
 import { ISignupData } from './types';
+import { selectRefreshToken, selectUserToken } from './selectors';
 
-export const setToken = (val: string) => {
+export const setToken = (val: string, refreshToken: string) => {
   window.localStorage.setItem('AUTH_TOKEN', val);
+  window.localStorage.setItem('REFRESH_TOKEN', refreshToken);
   apiClientService.setDefaultHeaders('Authorization', `Bearer ${val}`);
 };
 
@@ -24,7 +25,6 @@ export type HandleSignupAction = (data: ISignupData) => IThunk<void>;
 export type LoginAction = (email: string, password: string) => ILoginActionType;
 export type HandleLoginAction = (email: string, password: string) => IThunk<void>;
 
-export type GetUserData = () => IGetUserDataActionType;
 export type HandleInitAction = () => IThunk<void>;
 export type LogOutAction = () => ILogOutActionType;
 export type HandleLogOutAction = () => IThunk<void>;
@@ -58,4 +58,14 @@ export const handleSignupAction: HandleSignupAction = (
   } catch {
     alert('Failed signup');
   }
+}
+
+export const handleLoginAction: HandleLoginAction = (email, password) => async (dispatch, getState) => {
+  await(dispatch(loginAction(email, password)));
+
+  const state = getState();
+  const userToken = selectUserToken(state);
+  const refreshToken = selectRefreshToken(state);
+
+  setToken(userToken, refreshToken);
 }

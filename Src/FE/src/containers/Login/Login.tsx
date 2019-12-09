@@ -4,6 +4,8 @@ import { Formik, Form, Field } from 'formik';
 import { InputField, Button, H2 } from 'components';
 import { styled } from 'theme';
 import { validationUtil } from 'utils';
+import { HandleLoginAction } from 'store/domains';
+import { HandleGetUserInfoAction } from 'store/domains/user';
 
 const Wrapper = styled.div`
   max-width: 450px;
@@ -27,22 +29,30 @@ const Wrapper = styled.div`
   }
 `;
 
-const LoginForm = () => {
+interface ILoginForm {
+  handleLoginAction: HandleLoginAction;
+  handleGetUserInfoAction: HandleGetUserInfoAction;
+}
+
+const LoginForm: React.FC<ILoginForm> = ({ handleLoginAction, handleGetUserInfoAction }) => {
   return (
     <Wrapper>
       <H2 className="title">Login to NotStackOverflow</H2>
       <Formik
         initialValues={{
-          login: '',
+          email: '',
           password: ''
         }}
-        onSubmit={() => undefined}
+        onSubmit={async (values) => {
+          await handleLoginAction(values.email, values.password);
+          handleGetUserInfoAction();
+        }}
       >{() => (
         <Form>
           <Field
             component={InputField}
             label="Email"
-            name="login"
+            name="email"
             placeholder="Enter your email"
             validate={validationUtil.required}
           />

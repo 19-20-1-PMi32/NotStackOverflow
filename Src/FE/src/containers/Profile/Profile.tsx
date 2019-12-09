@@ -6,6 +6,7 @@ import { InputField, Button, H2, TextButton, WarningButton } from 'components';
 import { styled } from 'theme';
 import { validationUtil } from 'utils';
 import { RouteConsts } from 'consts';
+import { IUserDataSelect } from 'store/domains';
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,19 +57,20 @@ const Wrapper = styled.div`
   }
 `;
 
-const LoginForm = () => {
+interface IProfile {
+  userData: IUserDataSelect;
+}
+
+const LoginForm: React.FC<IProfile> = ({ userData }) => {
+  const { id, ...initialValues } = userData;
+
   return (
     <Wrapper>
       <div className="user-info">
         <H2 className="title">General information</H2>
         <Formik
-          initialValues={{
-            name: '',
-            surname: '',
-            username: '',
-            email: '',
-            work: ''
-          }}
+          initialValues={initialValues}
+          enableReinitialize={true}
           onSubmit={() => undefined}
         >{({ resetForm }) => (
           <Form>
@@ -88,8 +90,8 @@ const LoginForm = () => {
             />
             <Field
               component={InputField}
-              label="Username"
-              name="username"
+              label="Nickname"
+              name="nickName"
               placeholder="Enter your username"
               validate={validationUtil.required}
             />
@@ -102,9 +104,9 @@ const LoginForm = () => {
             />
             <Field
               component={InputField}
-              label="Work"
-              name="work"
-              placeholder="Enter your working place"
+              label="Job"
+              name="job"
+              placeholder="Enter your Job place"
             />
             <div className="align-buttons">
               <Button className="submit-button" type="submit">Save</Button>
@@ -114,9 +116,9 @@ const LoginForm = () => {
                   resetForm({
                     name: '',
                     surname: '',
-                    username: '',
+                    nickName: '',
                     email: '',
-                    work: ''
+                    job: ''
                   })
                 }}
               >
