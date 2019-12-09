@@ -19,9 +19,7 @@ namespace BLL.Service
             _database = database;
             _mapper = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Comment, CommentDTO>();
-             
-                cfg.CreateMap<CommentDTO, Comment>();
+                cfg.CreateMap<Comment, CommentDTO>().ReverseMap();
             }).CreateMapper();
 
         }

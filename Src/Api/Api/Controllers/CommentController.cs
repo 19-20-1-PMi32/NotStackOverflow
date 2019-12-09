@@ -1,4 +1,5 @@
-﻿using BLL.DTOEntities;
+﻿using Api.Filters;
+using BLL.DTOEntities;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,7 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ExceptionFilter]
     public class CommentController : ControllerBase
     {
         private readonly ICommentService _commentService;
