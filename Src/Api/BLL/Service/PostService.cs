@@ -188,13 +188,15 @@ namespace BLL.Service
                 ++post.UpVotes;
                 --post.DownVotes;
                 like.IsLiked = true;
+                _database.Votes.Update(like);
             }
             else
             {
                 --post.UpVotes;
                 _database.Votes.Remove(like);
-            }
 
+            }
+            _database.Posts.Update(post);
             _database.Save();
 
             return post.UpVotes;
@@ -219,12 +221,14 @@ namespace BLL.Service
                 --post.UpVotes;
                 ++post.DownVotes;
                 dislike.IsLiked = false;
+                _database.Votes.Update(dislike);
             }
             else
             {
-                --post.UpVotes;
+                --post.DownVotes;
                 _database.Votes.Remove(dislike);
             }
+            _database.Posts.Update(post);
             _database.Save();
 
             return post.DownVotes;

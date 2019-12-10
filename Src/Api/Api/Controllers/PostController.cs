@@ -74,13 +74,13 @@ namespace Api.Controllers
             return Ok(_postService.GetUsersPostById(userId));
         }
 
-        [HttpGet("vote")]
+        [HttpPut("vote")]
         public IActionResult SetLike(VoteDTO vote)
         {
             return Ok(_postService.SetLike(vote));
         }
         
-        [HttpGet("dislike")]
+        [HttpPut("dislike")]
         public IActionResult SetDislike(VoteDTO vote)
         {
             return Ok(_postService.SetDislike(vote));
