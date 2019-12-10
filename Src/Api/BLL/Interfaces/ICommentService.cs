@@ -13,5 +13,7 @@ namespace BLL.Interfaces
 
         void RemoveComment(int id);
 
+        void RemoveComment(int id, int userId);
+
     }
 }

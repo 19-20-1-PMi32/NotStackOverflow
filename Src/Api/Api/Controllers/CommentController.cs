@@ -1,6 +1,9 @@
-﻿using Api.Filters;
+﻿using System.Net;
+using Api.Filters;
 using BLL.DTOEntities;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -30,9 +33,17 @@ namespace Api.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteComment(int id)
         {
             _commentService.RemoveComment(id);
+            return Ok();
+        }
+
+        [HttpDelete("delete/{id}/{userId}")]
+        public IActionResult DeleteComment(int id, int userId)
+        {
+            _commentService.RemoveComment(id, userId);
             return Ok();
         }
     }

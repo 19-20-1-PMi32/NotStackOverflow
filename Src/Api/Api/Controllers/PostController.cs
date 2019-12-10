@@ -50,16 +50,22 @@ namespace Api.Controllers
             return Ok("Deleted");
         }
 
-        [HttpGet("all/{page}")]
-        public IActionResult GetAllPosts(int page)
+        [HttpGet("all/{page}/{orderBy=date}")]
+        public IActionResult GetAllPosts(int page, string orderBy)
         {
-            return Ok(_postService.GetPostList(page));
+            int pageCount;
+            var posts = _postService.GetPostList(page, orderBy, out pageCount);
+            return Ok(new
+            {
+                posts = posts,
+                pageCount = pageCount
+            });
         }
 
-        [HttpGet("issue/{postId}/{page}")]
-        public IActionResult GetPostWithComments(int postId, int page)
+        [HttpGet("issue/{postId}")]
+        public IActionResult GetPostWithComments(int postId)
         {
-            return Ok(_postService.GetPostsWithComments(postId, page));
+            return Ok(_postService.GetPostsWithComments(postId));
         }
 
         [HttpGet("user/{userId}")]
@@ -68,13 +74,13 @@ namespace Api.Controllers
             return Ok(_postService.GetUsersPostById(userId));
         }
 
-        [HttpGet("vote")]
+        [HttpPut("vote")]
         public IActionResult SetLike(VoteDTO vote)
         {
             return Ok(_postService.SetLike(vote));
         }
         
-        [HttpGet("dislike")]
+        [HttpPut("dislike")]
         public IActionResult SetDislike(VoteDTO vote)
         {
             return Ok(_postService.SetDislike(vote));

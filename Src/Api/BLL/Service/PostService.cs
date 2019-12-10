@@ -124,16 +124,42 @@ namespace BLL.Service
             return _database.Posts.GetById(id).ToPostDTO();
         }
 
-        public IEnumerable<PostDTO> GetPostsWithComments(int postId, int page)
+        public IEnumerable<PostDTO> GetPostsWithComments(int postId)
         {
             //return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostsWithComments(postId, startFrom, amount));
-            return _database.Posts.GetPostsWithComments(postId, page).Select(p => p.ToPostDTO());
+            return _database.Posts.GetPostsWithComments(postId).Select(p => p.ToPostDTO());
         }
 
-        public IEnumerable<PreviewPostDTO> GetPostList(int amount)
+        public IEnumerable<PreviewPostDTO> GetPostList(int amount, string orderBy, out int pageCount)
         {
             //return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostList(startFrom, amount));
-            return _database.Posts.GetPostList(amount).Select(p => p.ToPreviewPostDTO());
+            List<PreviewPostDTO> posts = new List<PreviewPostDTO>();
+            switch (orderBy)
+            {
+                case "like":
+                    posts = _database.Posts.OrderByLike(amount)
+                        .Select(p => p.ToPreviewPostDTO()).ToList();
+                    break;
+                case "dislike":
+                    posts = _database.Posts.OrderByDislike(amount)
+                        .Select(p => p.ToPreviewPostDTO()).ToList();
+                    break;
+                default:
+                    posts = _database.Posts.OrderByDate(amount)
+                        .Select(p => p.ToPreviewPostDTO()).ToList();
+                    break;
+            }
+
+            pageCount = _database.Posts.GetPostCount();
+            if (pageCount > 10)
+            {
+                pageCount /= 10;
+            }
+            else
+            {
+                pageCount = 0;
+            }
+            return posts;
         }
 
         public IEnumerable<PreviewPostDTO> GetUsersPostById(int userId)
@@ -162,13 +188,15 @@ namespace BLL.Service
                 ++post.UpVotes;
                 --post.DownVotes;
                 like.IsLiked = true;
+                _database.Votes.Update(like);
             }
             else
             {
                 --post.UpVotes;
                 _database.Votes.Remove(like);
-            }
 
+            }
+            _database.Posts.Update(post);
             _database.Save();
 
             return post.UpVotes;
@@ -193,16 +221,17 @@ namespace BLL.Service
                 --post.UpVotes;
                 ++post.DownVotes;
                 dislike.IsLiked = false;
+                _database.Votes.Update(dislike);
             }
             else
             {
-                --post.UpVotes;
+                --post.DownVotes;
                 _database.Votes.Remove(dislike);
             }
+            _database.Posts.Update(post);
             _database.Save();
 
             return post.DownVotes;
         }
-
     }
 }

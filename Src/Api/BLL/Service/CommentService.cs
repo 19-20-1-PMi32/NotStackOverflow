@@ -45,10 +45,19 @@ namespace BLL.Service
             return text;
         }
 
-        public void RemoveComment(int id)
+        public void RemoveComment(int id)// метод для адміна
         {
             var comment = _database.Comments.GetById(id);
 
+            _database.Comments.Remove(comment);
+            _database.Save();
+        }
+
+        public void RemoveComment(int id, int userId)
+        {
+            var comment = _database.Comments.GetById(id);
+
+            if (comment.UserId != userId) return; //тарас кинь ексепшн 
             _database.Comments.Remove(comment);
             _database.Save();
         }

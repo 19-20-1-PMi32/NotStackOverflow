@@ -25,20 +25,24 @@ namespace DAL.Repositories
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Post> GetPostsWithComments(int postId, int page = 1)
+        public IEnumerable<Post> GetPostsWithComments(int postId)
         {
             return dbContext.Posts
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
                 .Where(p => p.PostId == postId)
                 .Include(p => p.Comments)
                 .Include(p => p.User)
                 .ToList();
         }
 
+        public int GetPostCount()
+        {
+            return dbContext.Posts.ToList().Count;
+        }
+        
         public IEnumerable<Post> GetPostList(int page = 1)
         {
             return dbContext.Posts
+                .Where(p => p.PostNum == 0)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Include(p => p.User)
@@ -50,6 +54,40 @@ namespace DAL.Repositories
             return dbContext.Posts
                 .Where(p => p.UserId == userId)
                 .ToList();
+        }
+
+        public IEnumerable<Post> OrderByLike(int page = 1)
+        {
+            return dbContext.Posts
+                .Where(p => p.PostNum == 0)
+                .OrderByDescending(p => p.UpVotes)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(p => p.User)
+                .ToList();
+                
+        }
+        public IEnumerable<Post> OrderByDislike(int page = 1)
+        {
+            return dbContext.Posts
+                .Where(p => p.PostNum == 0)
+                .OrderByDescending(p => p.DownVotes)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(p => p.User)
+                .ToList();
+                
+        }
+        public IEnumerable<Post> OrderByDate(int page = 1)
+        {
+            return dbContext.Posts
+                .Where(p => p.PostNum == 0)
+                .OrderByDescending(p => p.DateOfPublish)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Include(p => p.User)
+                .ToList();
+                
         }
     }
 }
