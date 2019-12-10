@@ -130,10 +130,20 @@ namespace BLL.Service
             return _database.Posts.GetPostsWithComments(postId, page).Select(p => p.ToPostDTO());
         }
 
-        public IEnumerable<PreviewPostDTO> GetPostList(int amount)
+        public IEnumerable<PreviewPostDTO> GetPostList(int amount, out int pageCount)
         {
             //return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostList(startFrom, amount));
-            return _database.Posts.GetPostList(amount).Select(p => p.ToPreviewPostDTO());
+            var posts = _database.Posts.GetPostList(amount).Select(p => p.ToPreviewPostDTO()).ToList();
+            pageCount = posts.Count;
+            if (pageCount > 10)
+            {
+                pageCount /= 10;
+            }
+            else
+            {
+                pageCount = 0;
+            }
+            return posts;
         }
 
         public IEnumerable<PreviewPostDTO> GetUsersPostById(int userId)

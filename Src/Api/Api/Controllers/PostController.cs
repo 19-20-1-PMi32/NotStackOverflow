@@ -53,7 +53,13 @@ namespace Api.Controllers
         [HttpGet("all/{page}")]
         public IActionResult GetAllPosts(int page)
         {
-            return Ok(_postService.GetPostList(page));
+            int pageCount;
+            var posts = _postService.GetPostList(page, out pageCount);
+            return Ok(new
+            {
+                posts = posts,
+                pageCount = pageCount
+            });
         }
 
         [HttpGet("issue/{postId}/{page}")]

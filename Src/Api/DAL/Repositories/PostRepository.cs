@@ -28,9 +28,9 @@ namespace DAL.Repositories
         public IEnumerable<Post> GetPostsWithComments(int postId, int page = 1)
         {
             return dbContext.Posts
+                .Where(p => p.PostId == postId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Where(p => p.PostId == postId)
                 .Include(p => p.Comments)
                 .Include(p => p.User)
                 .ToList();
@@ -39,6 +39,7 @@ namespace DAL.Repositories
         public IEnumerable<Post> GetPostList(int page = 1)
         {
             return dbContext.Posts
+                .Where(p => p.PostNum == 0)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Include(p => p.User)

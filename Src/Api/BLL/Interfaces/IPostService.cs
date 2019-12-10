@@ -23,7 +23,7 @@ namespace BLL.Interfaces
 
         IEnumerable<PostDTO> GetPostsWithComments(int postId, int page);
 
-        IEnumerable<PreviewPostDTO> GetPostList(int amount);
+        IEnumerable<PreviewPostDTO> GetPostList(int amount, out int pageCount);
 
         IEnumerable<PreviewPostDTO> GetUsersPostById(int userId);
 
