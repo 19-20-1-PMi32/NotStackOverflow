@@ -124,17 +124,33 @@ namespace BLL.Service
             return _database.Posts.GetById(id).ToPostDTO();
         }
 
-        public IEnumerable<PostDTO> GetPostsWithComments(int postId, int page)
+        public IEnumerable<PostDTO> GetPostsWithComments(int postId)
         {
             //return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostsWithComments(postId, startFrom, amount));
-            return _database.Posts.GetPostsWithComments(postId, page).Select(p => p.ToPostDTO());
+            return _database.Posts.GetPostsWithComments(postId).Select(p => p.ToPostDTO());
         }
 
-        public IEnumerable<PreviewPostDTO> GetPostList(int amount, out int pageCount)
+        public IEnumerable<PreviewPostDTO> GetPostList(int amount, string orderBy, out int pageCount)
         {
             //return _mapper.Map<IEnumerable<Post>, ICollection<PostDTO>>(_database.Posts.GetPostList(startFrom, amount));
-            var posts = _database.Posts.GetPostList(amount).Select(p => p.ToPreviewPostDTO()).ToList();
-            pageCount = posts.Count;
+            List<PreviewPostDTO> posts = new List<PreviewPostDTO>();
+            switch (orderBy)
+            {
+                case "like":
+                    posts = _database.Posts.OrderByLike(amount)
+                        .Select(p => p.ToPreviewPostDTO()).ToList();
+                    break;
+                case "dislike":
+                    posts = _database.Posts.OrderByDislike(amount)
+                        .Select(p => p.ToPreviewPostDTO()).ToList();
+                    break;
+                default:
+                    posts = _database.Posts.OrderByDate(amount)
+                        .Select(p => p.ToPreviewPostDTO()).ToList();
+                    break;
+            }
+
+            pageCount = _database.Posts.GetPostCount();
             if (pageCount > 10)
             {
                 pageCount /= 10;
@@ -213,6 +229,5 @@ namespace BLL.Service
 
             return post.DownVotes;
         }
-
     }
 }
