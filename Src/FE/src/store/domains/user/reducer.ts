@@ -9,13 +9,17 @@ const initialState: ImmutableObject<IUserInitialState> = Immutable({
   surname: '',
   nickName: '',
   email: '',
-  job: ''
+  job: '',
+  questions: []
 });
 
 const authReducer = (state = initialState, action: IUserActionTypes) => {
   switch (action.type) {
     case UserActionTypeKeys.GET_USER_INFO_FULFILLED:
       return state.merge(action.payload);
+
+    case UserActionTypeKeys.GET_USER_POSTS_FULFILLED:
+      return state.set('questions', action.payload);
 
     default:
       return state;

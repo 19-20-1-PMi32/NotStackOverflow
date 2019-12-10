@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { styled } from 'theme';
 
@@ -70,6 +71,7 @@ const Wrapper = styled.div`
 
   .info-username {
     font-size: 13px;
+    color: ${({ theme }) => theme.color.black};
   }
 `;
 
@@ -78,16 +80,21 @@ interface IQuestionItem {
   answerCount: number;
   title: string;
   userName: string;
+  className?: string;
+  id: number;
 }
 
 export const QuestionItem: React.FC<IQuestionItem> = ({
   votesCount,
   answerCount,
   title,
-  userName
+  userName,
+  className,
+  id
 }) => {
   return (
-    <Wrapper>
+    <Link to={`/question/${id}/info`}>
+    <Wrapper className={className}>
       <div className="votes">
         <SubItem title={"votes"} count={votesCount}/>
         <SubItem title={"answer"} count={answerCount}/>
@@ -97,5 +104,6 @@ export const QuestionItem: React.FC<IQuestionItem> = ({
         <span className="info-username">Created by: {userName}</span>
       </div>
     </Wrapper>
+    </Link>
   )
 };

@@ -1,29 +1,32 @@
-import DashboardComponent from './Dashboard';
+import UserQuestionsComponent from './UserQuestion';
 
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 
 import {
   IStoreState,
-  getAllQuestionsAction,
-  selectQuestions
+  getUserPostsAction,
+  selectUserData,
+  selectUserPosts
+  
 } from 'store';
 
 const mapStateToProps = (state: IStoreState) => ({
-  questions: selectQuestions(state)
+  userData: selectUserData(state),
+  userQuestions: selectUserPosts(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      getAllQuestionsAction
+      getUserPostsAction
     },
     dispatch
   );
 
-export const DashboardContainer = connect(
+export const UserQuestionsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(DashboardComponent);
+)(UserQuestionsComponent);
 
-export default DashboardContainer;
+export default UserQuestionsContainer;

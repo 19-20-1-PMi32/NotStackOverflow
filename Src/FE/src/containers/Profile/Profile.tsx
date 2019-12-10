@@ -6,7 +6,7 @@ import { InputField, Button, H2, TextButton, WarningButton } from 'components';
 import { styled } from 'theme';
 import { validationUtil } from 'utils';
 import { RouteConsts } from 'consts';
-import { IUserDataSelect } from 'store/domains';
+import { IUserDataSelect, HandleUpdateUserInfoAction } from 'store/domains';
 
 const Wrapper = styled.div`
   display: flex;
@@ -59,9 +59,10 @@ const Wrapper = styled.div`
 
 interface IProfile {
   userData: IUserDataSelect;
+  handleUpdateUserInfoAction: HandleUpdateUserInfoAction;
 }
 
-const LoginForm: React.FC<IProfile> = ({ userData }) => {
+const LoginForm: React.FC<IProfile> = ({ userData, handleUpdateUserInfoAction }) => {
   const { id, ...initialValues } = userData;
 
   return (
@@ -71,7 +72,9 @@ const LoginForm: React.FC<IProfile> = ({ userData }) => {
         <Formik
           initialValues={initialValues}
           enableReinitialize={true}
-          onSubmit={() => undefined}
+          onSubmit={(values) => {
+            handleUpdateUserInfoAction(values as any);
+          }}
         >{({ resetForm }) => (
           <Form>
             <Field
@@ -111,15 +114,10 @@ const LoginForm: React.FC<IProfile> = ({ userData }) => {
             <div className="align-buttons">
               <Button className="submit-button" type="submit">Save</Button>
               <TextButton
+                type="button"
                 className="submit-button"
                 onClick={() => {
-                  resetForm({
-                    name: '',
-                    surname: '',
-                    nickName: '',
-                    email: '',
-                    job: ''
-                  })
+                  resetForm(initialValues)
                 }}
               >
                 Discard changes
@@ -133,7 +131,7 @@ const LoginForm: React.FC<IProfile> = ({ userData }) => {
         <Link to={RouteConsts.AskQuestion}> 
           <WarningButton className="button">Ask Question</WarningButton>
         </Link>
-        <Link to={`/user/${2}/questions`}> 
+        <Link to={`/user/${id}/questions`}> 
           <Button className="button">Your Questions</Button>
         </Link>
       </div>

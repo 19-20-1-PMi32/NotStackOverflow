@@ -5,7 +5,9 @@ import { bindActionCreators, Dispatch } from 'redux';
 
 import {
   selectUserData,
-  IStoreState
+  IStoreState,
+  handleUpdateUserInfoAction,
+  handleAddQuestionAction
 } from 'store';
 
 const mapStateToProps = (state: IStoreState) => ({
@@ -15,6 +17,7 @@ const mapStateToProps = (state: IStoreState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
+      handleUpdateUserInfoAction
     },
     dispatch
   );

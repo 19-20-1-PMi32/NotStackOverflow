@@ -5,7 +5,7 @@ import { WarningButton, H3, QuestionItem } from 'components';
 import { styled } from 'theme';
 
 import { RouteConsts } from 'consts';
-import { GetAllQuestionsAction, IQuestionInfo } from 'store/domains';
+import { GetAllQuestionsAction, IQuestionInfo, GetUserPostsAction, IUserDataSelect } from 'store/domains';
 
 const Wrapper = styled.div`
   max-width: 90%;
@@ -29,27 +29,26 @@ const Wrapper = styled.div`
 `;
 
 interface IDashboard {
-  getAllQuestionsAction: GetAllQuestionsAction;
-  questions: any;
+  getUserPostsAction: GetUserPostsAction;
+  userData: IUserDataSelect;
+  userQuestions: any;
 }
 
-const Dashboard: React.FC<IDashboard> = ({ getAllQuestionsAction, questions }) => {
-
+const UserQuestion: React.FC<IDashboard> = ({ getUserPostsAction, userData, userQuestions }) => {
   React.useEffect(() => {
-    getAllQuestionsAction(1)
+    if (userData.id) {
+      getUserPostsAction(userData.id);
+    }
   }, []);
 
   return (
     <Wrapper>
       <div className="header"> 
-        <H3 className="explore-questions">Explore our Questions</H3>
-        <Link to={RouteConsts.AskQuestion}> 
-          <WarningButton>Ask Question</WarningButton>
-        </Link>
+        <H3 className="explore-questions">Your Questions</H3>
       </div>
       
       <div className="items-wrapper">
-        {questions.map((question: IQuestionInfo) => (
+        {userQuestions && userQuestions.map((question: IQuestionInfo) => (
            <QuestionItem 
             votesCount={question.upVotes - question.downVotes}
             answerCount={0}
@@ -64,4 +63,4 @@ const Dashboard: React.FC<IDashboard> = ({ getAllQuestionsAction, questions }) =
   )
 };
 
-export default Dashboard;
+export default UserQuestion;

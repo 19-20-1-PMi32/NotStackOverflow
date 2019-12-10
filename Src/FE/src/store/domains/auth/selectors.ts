@@ -1,6 +1,6 @@
 import { IStoreState } from 'store/types';
 
-export const selectUserId = (state: IStoreState) => state.auth.id;
+export const selectAuthUserId = (state: IStoreState) => state.auth.id;
 
 export const selectUserToken = (state: IStoreState) => state.auth.token;
 

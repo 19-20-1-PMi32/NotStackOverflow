@@ -1,29 +1,35 @@
-import AskQuestionComponent from './AskQuestion';
+import QuestionViewComponent from './QuestionView';
 
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 
 import {
   IStoreState,
-  handleAddQuestionAction,
+  getPostByIdAction,
+  selectSelectedPost,
+  setLikeAction,
+  setDisLikeAction,
   selectUserId
 } from 'store';
 
 const mapStateToProps = (state: IStoreState) => ({
+  selectedPost: selectSelectedPost(state),
   userId: selectUserId(state)
-});
+}); 
 
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      handleAddQuestionAction
+      getPostByIdAction,
+      setLikeAction,
+      setDisLikeAction
     },
     dispatch
   );
 
-export const AskQuestionContainer = connect(
+export const QuestionViewContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(AskQuestionComponent);
+)(QuestionViewComponent);
 
-export default AskQuestionContainer;
+export default QuestionViewContainer;

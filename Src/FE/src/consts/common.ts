@@ -5,5 +5,6 @@ export enum RouteConsts {
   AskQuestion = '/question/ask',
   Profile = '/user/:id',
   QuestionInfo = '/question/:id',
-  ProfileQuestions = '/user/:id/questions'
+  ProfileQuestions = '/user/:id/questions',
+  QuestionItem = '/question/:id/info'
 }

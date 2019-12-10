@@ -10,6 +10,8 @@ import SignUpContainer from '../SignUp';
 import DashboardContainer from '../Dashboard';
 import AskQuestionContainer from '../AskQuestion';
 import ProfileContainer from '../Profile';
+import UserQuestions from '../UserQuesions';
+import QuestionViewContainer from '../QuestionView';
 import { IUserDataSelect, HandleInitAction } from 'store/domains';
 
 const Wrapper = styled.div`
@@ -56,6 +58,16 @@ const Root: React.FC<IRoot> = ({ userData, handleInitAction }) => {
           exact={true}
           path={RouteConsts.Profile}
           component={ProfileContainer}
+        />
+        <Route
+          exact={true}
+          path={RouteConsts.ProfileQuestions}
+          component={UserQuestions}
+        />
+        <Route
+          exact={true}
+          path={RouteConsts.QuestionItem}
+          component={QuestionViewContainer}
         />
       </Switch>
     </Wrapper>

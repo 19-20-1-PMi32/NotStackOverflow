@@ -57,6 +57,8 @@ const Wrapper = styled.div`
       width: 100% !important;
     }
   }
+
+  z-index: 9999;
 `;
 
 interface INavBarMenu {

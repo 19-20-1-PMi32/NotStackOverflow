@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import { InputField, WarningButton, H2, TextAreaField } from 'components';
 import { styled } from 'theme';
 import { validationUtil } from 'utils';
+import { HandleAddQuestionAction } from 'store/domains';
 
 const Wrapper = styled.div`
   max-width: 650px;
@@ -36,7 +37,12 @@ const Wrapper = styled.div`
   }
 `;
 
-const AskQuestionContainer = () => {
+interface IAskQuestionContainer {
+  handleAddQuestionAction: HandleAddQuestionAction;
+  userId: number;
+}
+
+const AskQuestionContainer: React.FC<IAskQuestionContainer> = ({ handleAddQuestionAction, userId }) => {
   return (
     <Wrapper>
       <H2 className="title">Ask a question</H2>
@@ -45,7 +51,15 @@ const AskQuestionContainer = () => {
           title: '',
           text: ''
         }}
-        onSubmit={() => undefined}
+        onSubmit={(values) => {
+          handleAddQuestionAction({
+            postNum: 0,
+            text: values.text,
+            title: values.title,
+            dateOfPublish: new Date().toLocaleString(),
+            userId: userId
+          });
+        }}
       >{() => (
         <Form>
           <Field
