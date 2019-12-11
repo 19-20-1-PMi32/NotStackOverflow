@@ -2,21 +2,27 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import { Route } from 'react-router';
 
 import GlobalStyles from './theme/global';
 import { ThemeProvider, theme } from 'theme';
-import App from './App';
 import store, { history } from 'store';
 
 import * as serviceWorker from './serviceWorker';
+
+import Root from './containers/Root';
+
+const MainRoot = () => (
+  <Route to={'/'} component={Root} />
+)
 
 ReactDOM.render(
   (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <GlobalStyles />
       <ThemeProvider theme={theme}>
-        <App />
+        <GlobalStyles />
+        <MainRoot />
       </ThemeProvider>
     </ConnectedRouter>
   </Provider>

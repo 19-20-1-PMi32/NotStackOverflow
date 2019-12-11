@@ -7,7 +7,7 @@ interface IHttpErrorResponse extends Error {
 interface IApiParams {
   headers?: object;
   query?: object;
-  data?: object;
+  data?: string | object;
   type?: string;
 }
 
