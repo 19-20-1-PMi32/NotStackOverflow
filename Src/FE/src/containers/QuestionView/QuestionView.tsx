@@ -4,7 +4,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { styled } from 'theme';
 
 import { QuestionItem } from './PostItem';
-import { GetPostByIdAction, IFullQuestionView, SetDisLikeAction, SetLikeAction } from 'store/domains';
+import { GetPostByIdAction, IFullQuestionView, SetDisLikeAction, SetLikeAction, AddCommentAction } from 'store/domains';
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,10 +12,8 @@ const Wrapper = styled.div`
   align-items: center;
   margin-top: 40px;
 
-  .question-item {
-  }
-
   .comment-item {
+    margin-top: 10px;
     margin-left: 80px;
   }
 `;
@@ -26,6 +24,7 @@ interface IQuestionView extends RouteComponentProps<{ id: string }> {
   setDisLikeAction: SetDisLikeAction;
   setLikeAction: SetLikeAction;
   userId: number;
+  addCommentAction: AddCommentAction;
 }
 
 const QuestionView: React.FC<IQuestionView> = ({ 
@@ -34,15 +33,22 @@ const QuestionView: React.FC<IQuestionView> = ({
   selectedPost, 
   setDisLikeAction,  
   setLikeAction,
-  userId
+  userId,
+  addCommentAction
 }) => {
   const postId = match.params.id;
 
   React.useEffect(() => {
     if (postId) {
-      getPostByIdAction(+postId, 1);
+      getPostByIdAction(+postId);
     }
   }, []);
+
+  if (selectedPost[0]) {
+    console.log('upVotes', selectedPost[0].upVotes)
+  console.log('downVotes', selectedPost[0].downVotes)
+  }
+  
 
   return (
     <Wrapper>
@@ -50,17 +56,20 @@ const QuestionView: React.FC<IQuestionView> = ({
         <QuestionItem
           title={el.title}
           text={el.text}
-          rating={el.upVotes + el.downVotes}
+          rating={el.downVotes + el.upVotes}
           date={el.dateOfPublish}
           name={el.user.name}
           comments={el.comments}
+          el={el}
+          userId={userId}
           upClick={() => {
-            setLikeAction(el.id, userId);
+            setLikeAction(el.id, userId, el.postNum);
           }}
           downClick={() => {
-            setDisLikeAction(el.id, userId);
+            setDisLikeAction(el.id, userId, el.postNum);
           }}
           className="question-item"
+          addCommentAction={addCommentAction}
         />
       ))}
     </Wrapper>

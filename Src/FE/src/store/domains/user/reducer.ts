@@ -3,6 +3,8 @@ import Immutable, { ImmutableObject } from 'seamless-immutable';
 import { UserActionTypeKeys, IUserActionTypes } from './actionTypes';
 import { IUserInitialState } from './types';
 
+import { AuthActionTypeKeys } from '../auth';
+
 const initialState: ImmutableObject<IUserInitialState> = Immutable({
   id: 0,
   name: '',
@@ -20,6 +22,9 @@ const authReducer = (state = initialState, action: IUserActionTypes) => {
 
     case UserActionTypeKeys.GET_USER_POSTS_FULFILLED:
       return state.set('questions', action.payload);
+
+    case AuthActionTypeKeys.LOG_OUT:
+      return initialState;
 
     default:
       return state;

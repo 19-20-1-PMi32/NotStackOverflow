@@ -12,7 +12,7 @@ import AskQuestionContainer from '../AskQuestion';
 import ProfileContainer from '../Profile';
 import UserQuestions from '../UserQuesions';
 import QuestionViewContainer from '../QuestionView';
-import { IUserDataSelect, HandleInitAction } from 'store/domains';
+import { IUserDataSelect, HandleInitAction, HandleLogOutAction } from 'store/domains';
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -22,9 +22,10 @@ const Wrapper = styled.div`
 interface IRoot {
   userData: IUserDataSelect;
   handleInitAction: HandleInitAction;
+  handleLogOutAction: HandleLogOutAction;
 }
 
-const Root: React.FC<IRoot> = ({ userData, handleInitAction }) => {
+const Root: React.FC<IRoot> = ({ userData, handleInitAction, handleLogOutAction }) => {
   
   React.useEffect(() => {
     handleInitAction()
@@ -32,7 +33,7 @@ const Root: React.FC<IRoot> = ({ userData, handleInitAction }) => {
 
   return (
     <Wrapper>
-      <NavBarMenu userData={userData}/>
+      <NavBarMenu userData={userData} handleLogOutAction={handleLogOutAction}/>
       <Switch>
         <Route
           exact={true}

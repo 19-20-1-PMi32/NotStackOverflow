@@ -6,7 +6,8 @@ import { bindActionCreators, Dispatch } from 'redux';
 import {
   selectUserData,
   IStoreState,
-  handleInitAction
+  handleInitAction,
+  handleLogOutAction
 } from 'store';
 
 const mapStateToProps = (state: IStoreState) => ({
@@ -16,7 +17,8 @@ const mapStateToProps = (state: IStoreState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) =>
   bindActionCreators(
     {
-      handleInitAction
+      handleInitAction,
+      handleLogOutAction
     },
     dispatch
   );

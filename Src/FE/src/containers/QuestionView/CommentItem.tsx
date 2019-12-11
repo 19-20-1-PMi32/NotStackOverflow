@@ -11,8 +11,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  border-top: 1px solid ${({ theme }) => theme.color.primary};
-  border-bottom: 1px solid ${({ theme }) => theme.color.primary};
+  border-left: 1px solid ${({ theme }) => theme.color.primary};
   padding: 10px;
 
   font-size: 14px;

@@ -39,6 +39,8 @@ const Dashboard: React.FC<IDashboard> = ({ getAllQuestionsAction, questions }) =
     getAllQuestionsAction(1)
   }, []);
 
+  console.log(questions)
+
   return (
     <Wrapper>
       <div className="header"> 
@@ -49,9 +51,9 @@ const Dashboard: React.FC<IDashboard> = ({ getAllQuestionsAction, questions }) =
       </div>
       
       <div className="items-wrapper">
-        {questions.map((question: IQuestionInfo) => (
+        {questions.length > 0 && questions.map((question: IQuestionInfo) => (
            <QuestionItem 
-            votesCount={question.upVotes - question.downVotes}
+            votesCount={question.upVotes + question.downVotes}
             answerCount={0}
             title={question.title}
             userName={question.previewUserDTO.name}

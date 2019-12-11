@@ -8,6 +8,11 @@ export interface IQuestionData {
   userId: number;
 }
 
+export interface IQuestionsPagPayload {
+  posts: [],
+  pageCount: number;
+}
+
 export interface IQuestionInfo {
   id: number;
   text: string;
@@ -62,6 +67,15 @@ export interface ISinglePost {
 export interface IQuestionInitialState {
   data: IQuestionInfo[];
   selectedPost: ISinglePost;
+  pageCount: number;
+}
+
+export interface IAddComment {
+	posNum: number;
+	dateOfPublish: string;
+	text: string;
+	userId: number;
+	postId: number;
 }
 
 export interface IQuestionState extends ImmutableObject<IQuestionInitialState> {}

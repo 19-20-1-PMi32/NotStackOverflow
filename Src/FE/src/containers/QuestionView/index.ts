@@ -9,7 +9,8 @@ import {
   selectSelectedPost,
   setLikeAction,
   setDisLikeAction,
-  selectUserId
+  selectUserId,
+  addCommentAction
 } from 'store';
 
 const mapStateToProps = (state: IStoreState) => ({
@@ -22,7 +23,8 @@ const mapDispatchToProps = (dispatch: Dispatch) =>
     {
       getPostByIdAction,
       setLikeAction,
-      setDisLikeAction
+      setDisLikeAction,
+      addCommentAction
     },
     dispatch
   );

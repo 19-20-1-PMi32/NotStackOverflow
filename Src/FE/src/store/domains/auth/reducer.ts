@@ -17,6 +17,9 @@ const authReducer = (state = initialState, action: IAuthActionTypes) => {
         .set('token', action.payload.access_token)
         .set('refreshToken', action.payload.refresh_token);
 
+    case AuthActionTypeKeys.LOG_OUT:
+      return initialState;
+
     default:
       return state;
   }

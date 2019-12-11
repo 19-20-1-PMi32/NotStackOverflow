@@ -1,6 +1,6 @@
 import { IPromiseAction } from 'types';
 
-import { ISinglePost } from './types';
+import { ISinglePost, IQuestionsPagPayload, IAddComment } from './types';
 
 export enum QuestionsActionTypeKeys {
   ADD_QUESTION = 'questions/ADD_QUESTION',
@@ -22,19 +22,29 @@ export enum QuestionsActionTypeKeys {
   SET_DISLIKE = 'questions/SET_DISLIKE',
   SET_DISLIKE_FULFILLED = 'questions/SET_DISLIKE_FULFILLED',
   SET_DISLIKE_REJECTED = 'questions/SET_DISLIKE_REJECTED',
+
+  ADD_COMMENT = 'questions/ADD_COMMENT',
+  ADD_COMMENT_FULFILLED = 'questions/ADD_COMMENT_FULFILLED',
+  ADD_COMMENT_REJECTED = 'questions/ADD_COMMENT_REJECTED',
 }
 
+export interface IAddCommentActiontype
+  extends IPromiseAction<QuestionsActionTypeKeys.ADD_COMMENT, Promise<{}>, IAddComment> {}
+
+export interface IAddCommentFulfilledActiontype
+  extends IPromiseAction<QuestionsActionTypeKeys.ADD_COMMENT_FULFILLED, {}, IAddComment> {}
+
 export interface ISetLikeActionType
-  extends IPromiseAction<QuestionsActionTypeKeys.SET_LIKE, Promise<{}>> {}
+  extends IPromiseAction<QuestionsActionTypeKeys.SET_LIKE, Promise<{}>, number> {}
 
 export interface ISetLikeFulfilledActionType
-  extends IPromiseAction<QuestionsActionTypeKeys.SET_LIKE_FULFILLED, {}> {}
+  extends IPromiseAction<QuestionsActionTypeKeys.SET_LIKE_FULFILLED, {}, number> {}
 
 export interface ISetDisLikeActionType
-  extends IPromiseAction<QuestionsActionTypeKeys.SET_DISLIKE, Promise<{}>> {}
+  extends IPromiseAction<QuestionsActionTypeKeys.SET_DISLIKE, Promise<{}>, number> {}
 
 export interface ISetDisLikeFulfilledActionType
-  extends IPromiseAction<QuestionsActionTypeKeys.SET_DISLIKE_FULFILLED, {}> {}
+  extends IPromiseAction<QuestionsActionTypeKeys.SET_DISLIKE_FULFILLED, {}, number> {}
 
 export interface IAddQuestionsActionType
   extends IPromiseAction<QuestionsActionTypeKeys.ADD_QUESTION, Promise<{}>> {}
@@ -43,10 +53,10 @@ export interface IAddQuestionsFulfilledActionType
   extends IPromiseAction<QuestionsActionTypeKeys.ADD_QUESTION_FULFILLED, {}> {}
 
 export interface IGetQuestionsActionType
-  extends IPromiseAction<QuestionsActionTypeKeys.GET_QUESTIONS_PAG, Promise<{}>> {}
+  extends IPromiseAction<QuestionsActionTypeKeys.GET_QUESTIONS_PAG, Promise<IQuestionsPagPayload>> {}
 
 export interface IGetQuestionsFulfilledActionType
-  extends IPromiseAction<QuestionsActionTypeKeys.GET_QUESTIONS_PAG_FULFILLED, {}> {}
+  extends IPromiseAction<QuestionsActionTypeKeys.GET_QUESTIONS_PAG_FULFILLED, IQuestionsPagPayload> {}
 
 export interface IGetQuestionByIdActionType
   extends IPromiseAction<QuestionsActionTypeKeys.GET_QUESTION_BY_ID, Promise<ISinglePost>> {}
@@ -64,4 +74,6 @@ export type IQuestionsActionTypes =
   | ISetLikeActionType
   | ISetLikeFulfilledActionType
   | ISetDisLikeActionType
-  | ISetDisLikeFulfilledActionType;
+  | ISetDisLikeFulfilledActionType
+  | IAddCommentActiontype
+  | IAddCommentFulfilledActiontype;

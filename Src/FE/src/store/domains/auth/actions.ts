@@ -12,6 +12,7 @@ import {
 import * as api from './api';
 import { ISignupData } from './types';
 import { selectRefreshToken, selectUserToken } from './selectors';
+import { RouteConsts } from 'consts';
 
 export const setToken = (val: string, refreshToken: string) => {
   window.localStorage.setItem('AUTH_TOKEN', val);
@@ -47,6 +48,7 @@ export const logOutAction: LogOutAction = () => ({
 export const handleLogOutAction: HandleLogOutAction = () => (dispatch) => {
   dispatch(logOutAction());
   window.localStorage.removeItem('AUTH_TOKEN');
+  window.localStorage.removeItem('REFRESH_TOKEN');
 }
 
 export const handleSignupAction: HandleSignupAction = (
@@ -68,4 +70,5 @@ export const handleLoginAction: HandleLoginAction = (email, password) => async (
   const refreshToken = selectRefreshToken(state);
 
   setToken(userToken, refreshToken);
+  dispatch(push(RouteConsts.Dashboard));
 }

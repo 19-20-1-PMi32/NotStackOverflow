@@ -5,7 +5,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { H2, Button, TextButton, InputField } from 'components';
 import { styled } from 'theme';
 import { RouteConsts } from 'consts';
-import { IUserDataSelect } from 'store/domains';
+import { IUserDataSelect, HandleLogOutAction } from 'store/domains';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -63,9 +63,10 @@ const Wrapper = styled.div`
 
 interface INavBarMenu {
   userData: IUserDataSelect;
+  handleLogOutAction: HandleLogOutAction;
 }
 
-export const NavBarMenu: React.FC<INavBarMenu> = ({ userData }) => {
+export const NavBarMenu: React.FC<INavBarMenu> = ({ userData, handleLogOutAction }) => {
   return (
     <Wrapper>
       <div className="left-side">
@@ -94,7 +95,7 @@ export const NavBarMenu: React.FC<INavBarMenu> = ({ userData }) => {
             <Link to={`/user/${userData.id}`}>
               <Button className="text-button">Profile</Button>
             </Link>
-            <Link to={RouteConsts.Dashboard}>
+            <Link to={RouteConsts.Dashboard} onClick={() => handleLogOutAction()}>
               <TextButton>Logout</TextButton>
             </Link>
           </>

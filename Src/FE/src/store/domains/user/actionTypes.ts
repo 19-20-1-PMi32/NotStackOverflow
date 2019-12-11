@@ -3,6 +3,7 @@ import { IPromiseAction } from 'types';
 import { IUserDataResponse, IUpdateUserData } from './types';
 
 import { IQuestionInfo } from '../questions';
+import { ILogOutActionType } from '../auth';
 
 export enum UserActionTypeKeys {
   GET_USER_INFO = 'user/GET_USER_INFO',
@@ -42,4 +43,5 @@ export type IUserActionTypes =
   | IUpdateUserInfoActionType
   | IUpdateUserInfoFulfilledActionType
   | IGetUserPostsActionType
-  | IGetUserPostsFulfilledActionType;
+  | IGetUserPostsFulfilledActionType
+  | ILogOutActionType;
